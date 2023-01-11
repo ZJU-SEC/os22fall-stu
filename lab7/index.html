@@ -1,0 +1,690 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://zju-sec.github.io/os22fall-stu/lab7/">
+      
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.3">
+    
+    
+      
+        <title>Lab 7: RV64 MMIO & VFS - 浙江大学22年秋操作系统实验</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.6b71719e.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.2505c338.min.css">
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CCascadia:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Cascadia"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="" data-md-color-accent="">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#lab-7-rv64-mmio-vfs" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="浙江大学22年秋操作系统实验" class="md-header__button md-logo" aria-label="浙江大学22年秋操作系统实验" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            浙江大学22年秋操作系统实验
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Lab 7: RV64 MMIO & VFS
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      <form class="md-header__option" data-md-component="palette">
+        
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="" data-md-color-accent=""  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+          
+            <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6zm0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4zM7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+            </label>
+          
+        
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="" data-md-color-accent=""  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+          
+            <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3Z"/></svg>
+            </label>
+          
+        
+      </form>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/ZJU-SEC/os22fall-stu" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    ZJU-SEC/os22fall-stu
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="浙江大学22年秋操作系统实验" class="md-nav__button md-logo" aria-label="浙江大学22年秋操作系统实验" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    浙江大学22年秋操作系统实验
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/ZJU-SEC/os22fall-stu" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    ZJU-SEC/os22fall-stu
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab0/" class="md-nav__link">
+        实验指导零
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab1/" class="md-nav__link">
+        实验指导一
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab2/" class="md-nav__link">
+        实验指导二
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab3/" class="md-nav__link">
+        实验指导三
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab4/" class="md-nav__link">
+        实验指导四
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab5/" class="md-nav__link">
+        实验指导五
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab6/" class="md-nav__link">
+        实验指导六
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../faq/" class="md-nav__link">
+        常见问题及解答
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    1 实验目的
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    2 实验环境
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    3 背景知识
+  </a>
+  
+    <nav class="md-nav" aria-label="3 背景知识">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-mmio" class="md-nav__link">
+    3.1 MMIO
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#311-io" class="md-nav__link">
+    3.1.1 图灵机与 I/O
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#312-port-mapped-io" class="md-nav__link">
+    3.1.2 Port Mapped I/O
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#313-memory-mapped-io" class="md-nav__link">
+    3.1.3 Memory Mapped I/O
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-uart" class="md-nav__link">
+    3.2 UART
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-vfs" class="md-nav__link">
+    3.3 VFS
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    4 实验步骤
+  </a>
+  
+    <nav class="md-nav" aria-label="4 实验步骤">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-say-goodbye-via-uart" class="md-nav__link">
+    4.1 Say Goodbye via UART
+  </a>
+  
+    <nav class="md-nav" aria-label="4.1 Say Goodbye via UART">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#411" class="md-nav__link">
+    4.1.1 建立映射
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#412" class="md-nav__link">
+    4.1.2 进行输出
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-vfs" class="md-nav__link">
+    4.2 VFS 实现
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5" class="md-nav__link">
+    5 实验提交
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+
+<h1 id="lab-7-rv64-mmio-vfs">Lab 7: RV64 MMIO &amp; VFS</h1>
+<blockquote>
+<p>本次实验是 bonus，并且只需要提交实验代码，不需要提交实验报告</p>
+</blockquote>
+<h2 id="1">1 实验目的</h2>
+<ul>
+<li>认识 RISC-V 中的 MMIO 机制，利用 MMIO 完成 UART 串口输出</li>
+<li>理解 VFS 虚拟文件系统，实现用 <code>write</code> syscall 实现不同功能</li>
+</ul>
+<h2 id="2">2 实验环境</h2>
+<ul>
+<li>Same as previous labs.</li>
+</ul>
+<h2 id="3">3 背景知识</h2>
+<h3 id="31-mmio">3.1 MMIO</h3>
+<p>我们在《计算机组成与设计》中第一次认识了 RISC-V 指令集，并且实现了一个简单的 MCU。但是你应该也已经发现了，RISC-V 指令集中并没有用于完成输入输出的专用指令。例如当你想将一个寄存器的值输出到某块屏幕或者串口上，可并没有一条指令能替你做这件事。但是我们常说 <strong>There is no magic in programming.</strong> 在系统编程领域，这句话依然成立。在 Bonus 的第一部分，你将会认识指令集是如何与外部设备进行交互的，并使用最简单的设备 UART (Universal Asynchronous Receiver-Transmitter) 来实现字符输出。</p>
+<h3 id="311-io">3.1.1 图灵机与 I/O</h3>
+<p>大家都学习了《计算理论》课程，了解了如今的计算机都是基于图灵机架构的，RISC-V 指令集架构的计算机也不例外。但是回想起来，图灵机与如今的计算机有着显著的差别——图灵机缺失了我们<strong>直觉上</strong>的<strong>输入</strong>和<strong>输出</strong>功能。</p>
+<p><img alt="图灵机的艺术表示 from WikiPedia" src="../img/turing.png" /></p>
+<p>图灵机的“输入”是一条带有程序的纸带，而将最后的“输出”也写在纸带上。而纸带在如今的计算机中被实现成了内存，我们可以看到纸带上填写的内容，却没有办法直接看到内存中存储的内容。如果完全按照图灵机来实现计算机，就得通过给 DRAM 中的内存充电来编程，用万用电表来读取程序的输出了，这可比敲键盘看显示器来得困难多了。这是因为我们看到的计算机不是一台裸露在外的图灵机，而更像是一台被装在盒子里的图灵机，我们得用复杂的手段才能直接给图灵机输入纸带或者读取纸带上的输出。</p>
+<p>为了解决交互困难的问题，计算机科学先驱们进行了两种实现，<strong>Port Mapped I/O</strong> 与 <strong>Memory Mapped I/O (MMIO)</strong>。</p>
+<h3 id="312-port-mapped-io">3.1.2 Port Mapped I/O</h3>
+<p>首先很容易想到的是，我们给图灵机加上一些小功能，除了原本的计算以外，我们在图灵机的转移函数中定义新的运算，并给图灵机增加一条裸露在包裹图灵机的盒子外的输入输出专用纸带，图灵机可以读取这条纸带上的内容作为，也可以在这条纸带上写东西作为输出。因为这条纸带是裸露在外的，所以可以更轻松地与操作人员或者其他设备进行交互。</p>
+<p>于是新的抽象诞生了，我们用新的专用指令来作为转移函数中新定义的部分，并用 Port 空间作为新增加的裸露在外的纸带。</p>
+<p><img alt="intel in and out" src="../img/Screenshot_20230108_225459.png" /></p>
+<p>ISA 通过 <code>out</code> 指令来将值写到某个连接在 Port 总线上的设备寄存器上，这样设备就能够发现自身内部有寄存器被改写了，做出对应的响应。例如我们要打印某个字符，就向串口所在的 Port 写上我们要输出的字符，然后这个值再由其他电路控制显示到屏幕上，而无需 CPU 再插手显示的过程。这就像图灵机用我们新定义的运算在裸露在外的纸带上写了内容，可以被直接观察到。</p>
+<p>相似的 <code>in</code> 指令来读取外部设备寄存器上的值，就像读取裸露纸带上操作人员写的值或是其他设备写的值一样。</p>
+<h3 id="313-memory-mapped-io">3.1.3 Memory Mapped I/O</h3>
+<p>但是我们实现的 RISC-V 的子集里显然没包括类似的指令，在实验中也没有用到过，所以 RISC-V 是怎么实现输入输出的呢？</p>
+<p>我们还有别的方法来进行实现，比如我们将纸带的某些部分替代成专用的传感器，再将纸带的其他某些部分替换成可以由外部控制值的控制器。这样我们在换成了传感器的部分写上值的时候，这个值就能够被输出到包裹图灵机的盒子外部；并且我们可以在外部通过控制器控制纸带上的某些值，这样就能够对图灵机进行运行中的输入了！</p>
+<p>当我们阅读 QEMU 的源码 <code>/hw/riscv/virt.c</code> 的时候（virt 正是我们整个实验里选择的机器型号，由 <code>-machine virt</code> 进行指定），可以看到模拟器中有一大段定义：</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">static</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">MemMapEntry</span><span class="w"> </span><span class="n">virt_memmap</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="p">[</span><span class="n">VIRT_DEBUG</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w">        </span><span class="p">{</span><span class="w">        </span><span class="mh">0x0</span><span class="p">,</span><span class="w">         </span><span class="mh">0x100</span><span class="w"> </span><span class="p">},</span>
+<span class="w">    </span><span class="p">[</span><span class="n">VIRT_MROM</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w">         </span><span class="p">{</span><span class="w">     </span><span class="mh">0x1000</span><span class="p">,</span><span class="w">        </span><span class="mh">0xf000</span><span class="w"> </span><span class="p">},</span>
+<span class="w">    </span><span class="p">[</span><span class="n">VIRT_TEST</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w">         </span><span class="p">{</span><span class="w">   </span><span class="mh">0x100000</span><span class="p">,</span><span class="w">        </span><span class="mh">0x1000</span><span class="w"> </span><span class="p">},</span>
+<span class="w">    </span><span class="p">[</span><span class="n">VIRT_RTC</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w">          </span><span class="p">{</span><span class="w">   </span><span class="mh">0x101000</span><span class="p">,</span><span class="w">        </span><span class="mh">0x1000</span><span class="w"> </span><span class="p">},</span>
+<span class="w">    </span><span class="p">[</span><span class="n">VIRT_CLINT</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w">        </span><span class="p">{</span><span class="w">  </span><span class="mh">0x2000000</span><span class="p">,</span><span class="w">       </span><span class="mh">0x10000</span><span class="w"> </span><span class="p">},</span>
+<span class="w">    </span><span class="p">[</span><span class="n">VIRT_ACLINT_SSWI</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w">  </span><span class="p">{</span><span class="w">  </span><span class="mh">0x2F00000</span><span class="p">,</span><span class="w">        </span><span class="mh">0x4000</span><span class="w"> </span><span class="p">},</span>
+<span class="w">    </span><span class="p">[</span><span class="n">VIRT_PCIE_PIO</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w">     </span><span class="p">{</span><span class="w">  </span><span class="mh">0x3000000</span><span class="p">,</span><span class="w">       </span><span class="mh">0x10000</span><span class="w"> </span><span class="p">},</span>
+<span class="w">    </span><span class="p">[</span><span class="n">VIRT_PLATFORM_BUS</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w">  </span><span class="mh">0x4000000</span><span class="p">,</span><span class="w">     </span><span class="mh">0x2000000</span><span class="w"> </span><span class="p">},</span>
+<span class="w">    </span><span class="p">[</span><span class="n">VIRT_PLIC</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w">         </span><span class="p">{</span><span class="w">  </span><span class="mh">0xc000000</span><span class="p">,</span><span class="w"> </span><span class="n">VIRT_PLIC_SIZE</span><span class="p">(</span><span class="n">VIRT_CPUS_MAX</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="p">},</span>
+<span class="w">    </span><span class="p">[</span><span class="n">VIRT_APLIC_M</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w">      </span><span class="p">{</span><span class="w">  </span><span class="mh">0xc000000</span><span class="p">,</span><span class="w"> </span><span class="n">APLIC_SIZE</span><span class="p">(</span><span class="n">VIRT_CPUS_MAX</span><span class="p">)</span><span class="w"> </span><span class="p">},</span>
+<span class="w">    </span><span class="p">[</span><span class="n">VIRT_APLIC_S</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w">      </span><span class="p">{</span><span class="w">  </span><span class="mh">0xd000000</span><span class="p">,</span><span class="w"> </span><span class="n">APLIC_SIZE</span><span class="p">(</span><span class="n">VIRT_CPUS_MAX</span><span class="p">)</span><span class="w"> </span><span class="p">},</span>
+<span class="w">    </span><span class="p">[</span><span class="n">VIRT_UART0</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w">        </span><span class="p">{</span><span class="w"> </span><span class="mh">0x10000000</span><span class="p">,</span><span class="w">         </span><span class="mh">0x100</span><span class="w"> </span><span class="p">},</span>
+<span class="w">    </span><span class="p">[</span><span class="n">VIRT_VIRTIO</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w">       </span><span class="p">{</span><span class="w"> </span><span class="mh">0x10001000</span><span class="p">,</span><span class="w">        </span><span class="mh">0x1000</span><span class="w"> </span><span class="p">},</span>
+<span class="w">    </span><span class="p">[</span><span class="n">VIRT_FW_CFG</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w">       </span><span class="p">{</span><span class="w"> </span><span class="mh">0x10100000</span><span class="p">,</span><span class="w">          </span><span class="mh">0x18</span><span class="w"> </span><span class="p">},</span>
+<span class="w">    </span><span class="p">[</span><span class="n">VIRT_FLASH</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w">        </span><span class="p">{</span><span class="w"> </span><span class="mh">0x20000000</span><span class="p">,</span><span class="w">     </span><span class="mh">0x4000000</span><span class="w"> </span><span class="p">},</span>
+<span class="w">    </span><span class="p">[</span><span class="n">VIRT_IMSIC_M</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w">      </span><span class="p">{</span><span class="w"> </span><span class="mh">0x24000000</span><span class="p">,</span><span class="w"> </span><span class="n">VIRT_IMSIC_MAX_SIZE</span><span class="w"> </span><span class="p">},</span>
+<span class="w">    </span><span class="p">[</span><span class="n">VIRT_IMSIC_S</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w">      </span><span class="p">{</span><span class="w"> </span><span class="mh">0x28000000</span><span class="p">,</span><span class="w"> </span><span class="n">VIRT_IMSIC_MAX_SIZE</span><span class="w"> </span><span class="p">},</span>
+<span class="w">    </span><span class="p">[</span><span class="n">VIRT_PCIE_ECAM</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="mh">0x30000000</span><span class="p">,</span><span class="w">    </span><span class="mh">0x10000000</span><span class="w"> </span><span class="p">},</span>
+<span class="w">    </span><span class="p">[</span><span class="n">VIRT_PCIE_MMIO</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="mh">0x40000000</span><span class="p">,</span><span class="w">    </span><span class="mh">0x40000000</span><span class="w"> </span><span class="p">},</span>
+<span class="w">    </span><span class="p">[</span><span class="n">VIRT_DRAM</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w">         </span><span class="p">{</span><span class="w"> </span><span class="mh">0x80000000</span><span class="p">,</span><span class="w">           </span><span class="mh">0x0</span><span class="w"> </span><span class="p">},</span>
+<span class="p">};</span>
+</code></pre></div></td></tr></table></div>
+<p>可以看到这个物理内存模型其实与加上了“传感器”和“控制器”的纸带非常类似，其中某些段被换成了控制器，某些段被换成了传感器。</p>
+<ol>
+<li>例如我们在本次实验中会用到的 <code>VIRT_UART0</code>，就是一个最简单的传感器，往这段物理内存空间里面写字符，就会由 CPU 外的其他电路来将写入的信号进行编码后进行输出。同时它也是一个控制器，CPU 可以从中读取其他设备输入后被保存在寄存器中的值，作为计算过程中的输入。</li>
+<li><code>VIRT_RTC</code> 也是一个传感器，是我们之前进行调度的基础，这是一个时钟中断发生器，当我们向这段内存空间中写入值时，其实是写进了中断发生器的一个寄存器里，然后中断发生器会递减这个寄存器中的值，当归零时，向 CPU 发送请求来引发时钟中断。</li>
+<li>而 <code>[VIRT_DRAM] = {0x80000000, 0x0}</code> 则表示这段 DRAM （我们常说的内存）不限制空间大小。它就像原本的纸带一样能够延伸到无限长，作为图灵机用于计算的空间。</li>
+</ol>
+<h3 id="32-uart">3.2 UART</h3>
+<blockquote>
+<p>以下内容摘自 WikiPedia</p>
+</blockquote>
+<p>通用非同步收發傳輸器（Universal Asynchronous Receiver/Transmitter，通常稱為 UART ）是一種非同步收發傳輸器，是電腦硬件的一部分，將數據通過串列通訊進行傳輸。UART 通常用在與其他通訊介面（如 EIA RS-232）的連接上。</p>
+<p>具體實物表現為獨立的模組化晶片，或是微處理器中的內部周邊裝置 (peripheral)。一般和 RS-232C 規格的，類似 Maxim 的 MAX232 之類的標準訊號振幅變換晶片進行搭配，作為連接外部裝置的介面。在 UART 上追加同步方式的序列訊號變換電路的產品，被稱為 USART (Universal Synchronous Asynchronous Receiver Transmitter)。</p>
+<blockquote>
+<p>省流：CPU 把值写进 UART 的寄存器里，UART 就会把这些值编码后传输出去。只要用专用的控制器进行接收，就能够显示在屏幕上。而 QEMU 已经帮我们实现好了所有部分，我们只负责写寄存器就行。</p>
+</blockquote>
+<h3 id="33-vfs">3.3 VFS</h3>
+<h2 id="4">4 实验步骤</h2>
+<h3 id="41-say-goodbye-via-uart">4.1 Say Goodbye via UART</h3>
+<p>经过前面的介绍，我们已经知道，只要往某个物理地址写入值，这个值就会被写进 UART 的寄存器里，然后被传输出去后进行输出。而在 QEMU 中这个物理地址是 <code>VIRT_UART0</code> 的起始地址，也就是 <code>0x10000000</code>。</p>
+<p>本次实验的第一部分，你需要通过向这个地址依次写入字符，实现输出 <code>[S] 2023 Bye oslab!\n</code>，下面你将在 <code>init/main.c</code> 中输出了 <code>[S] 2022 Hello RISC-V</code> 后紧接着调用 <code>bye();</code> 来输出这句话。</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="nf">bye</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// create the mapping from 0x10000000 to 0x10000000 (4.1.1)</span>
+<span class="w">    </span><span class="c1">// do the print (4.1.2)</span>
+<span class="p">}</span>
+</code></pre></div></td></tr></table></div>
+<h4 id="411">4.1.1 建立映射</h4>
+<p>因为启用了虚拟内存，所以我们没法直接对某个物理地址进行访存。所以必须建立起映射，例如，你可以等值映射：<code>0x10000000 -&gt; 0x10000000</code>. 这样往虚拟地址 <code>0x10000000</code> 写的值就会被写入物理地址空间的位置 <code>0x10000000</code> 了，而这个位置对应的就是 UART 的寄存器。</p>
+<h4 id="412">4.1.2 进行输出</h4>
+<p>建立好了映射以后，就可以往寄存器里写值了！说是寄存器，但是由于是外部设备的寄存器，并且我们使用的 RISC-V 架构使用了 MMIO 来作为访问外设的方式，所以我们直接做 </p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="o">*</span><span class="p">(</span><span class="k">volatile</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="mh">0x10000000</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">c</span><span class="p">;</span>
+</code></pre></div></td></tr></table></div>
+<p>时，就会把字符 <code>c</code> 的值写入寄存器，这个字符就会出现在我们运行 QEMU 的终端里了。所以需要做的事是遍历字符串，将其中的每一个字符都写入 <code>0x10000000</code> 这个地址。</p>
+<h3 id="42-vfs">4.2 VFS 实现</h3>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="fm">todo!</span><span class="p">();</span>
+</code></pre></div></td></tr></table></div>
+<h2 id="5">5 实验提交</h2>
+<p>只需将本次实验的代码打包上传。如果没有完成所有内容将按一定比例加分。</p>
+<blockquote>
+<p>本实验指导中的图片来源于 WikiPedia, https://www.felixcloutier.com/x86/out</p>
+</blockquote>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+          <a href="#" class="md-top md-icon" data-md-component="top" hidden>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+            Back to top
+          </a>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.top"], "search": "../assets/javascripts/workers/search.e5c33ebb.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.ba449ae6.min.js"></script>
+      
+        <script src="../javascripts/mathjax.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

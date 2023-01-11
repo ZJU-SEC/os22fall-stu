@@ -1,0 +1,748 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://zju-sec.github.io/os22fall-stu/faq/">
+      
+      
+        <link rel="prev" href="../lab6/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.3">
+    
+    
+      
+        <title>常见问题及解答 - 浙江大学22年秋操作系统实验</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.6b71719e.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.2505c338.min.css">
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CCascadia:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Cascadia"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="" data-md-color-accent="">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#_1" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="浙江大学22年秋操作系统实验" class="md-header__button md-logo" aria-label="浙江大学22年秋操作系统实验" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            浙江大学22年秋操作系统实验
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              常见问题及解答
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      <form class="md-header__option" data-md-component="palette">
+        
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="" data-md-color-accent=""  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+          
+            <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6zm0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4zM7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+            </label>
+          
+        
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="" data-md-color-accent=""  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+          
+            <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3Z"/></svg>
+            </label>
+          
+        
+      </form>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/ZJU-SEC/os22fall-stu" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    ZJU-SEC/os22fall-stu
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="浙江大学22年秋操作系统实验" class="md-nav__button md-logo" aria-label="浙江大学22年秋操作系统实验" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    浙江大学22年秋操作系统实验
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/ZJU-SEC/os22fall-stu" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    ZJU-SEC/os22fall-stu
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab0/" class="md-nav__link">
+        实验指导零
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab1/" class="md-nav__link">
+        实验指导一
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab2/" class="md-nav__link">
+        实验指导二
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab3/" class="md-nav__link">
+        实验指导三
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab4/" class="md-nav__link">
+        实验指导四
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab5/" class="md-nav__link">
+        实验指导五
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab6/" class="md-nav__link">
+        实验指导六
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          常见问题及解答
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        常见问题及解答
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-linux-wsl2-mnt" class="md-nav__link">
+    1 为什么我把 Linux 源码放在共享文件夹或 wsl2 的 /mnt 下编译不出来？
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-qemu-gdb-si" class="md-nav__link">
+    2 为什么 QEMU &amp; GDB 使用 si 单指令调试遇到模式切换时无法正常执行？
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-gdb-next-finish" class="md-nav__link">
+    3 为什么我不能在 GDB 中使用 next 或者 finish ?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-debug-next-finish" class="md-nav__link">
+    4 为什么我在内核中添加了 debug 信息，但是还是没法使用 next 或者 finish ?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-start_kernel" class="md-nav__link">
+    5  为什么我在 start_kernel 处不能正常使用断点？
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-lab1-riscv64-elf-unknown-gcc-no-such-file-or-directory" class="md-nav__link">
+    6 为什么 Lab1 中提示 riscv64-elf-unknown-gcc: No such file or directory ?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-lab1-c" class="md-nav__link">
+    7 为什么 Lab1 中我的 C 语言函数的参数无法正确传入？
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-puti-uint64-32bits" class="md-nav__link">
+    8 为什么我把 puti 的参数类型替换成 uint64 还是只能打印出 32bits 的值？
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-qemu" class="md-nav__link">
+    9 为什么我的 QEMU 会 “卡住”？
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-satp-gdb-multiarch-segmentation-fault" class="md-nav__link">
+    10 为什么我在设置 satp 后导致了 gdb-multiarch 的 segmentation fault ?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-vmlinuxldss-include-typesh" class="md-nav__link">
+    11 为什么在 vmlinux.lds.S 中会 #include "types.h"?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-uapp" class="md-nav__link">
+    12 uapp 明明已经在内存里了，为什么还要被拷贝一次才能运行？
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#13-sret-instruction-page-fault" class="md-nav__link">
+    13 为什么我 sret 到用户程序的第一条指令时会 Instruction Page Fault?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#14-uapp-vma-mmap" class="md-nav__link">
+    14 uapp 要怎么拷贝到内存里？是要我们直接实现 VMA 和 mmap 吗？
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-linux-wsl2-mnt" class="md-nav__link">
+    1 为什么我把 Linux 源码放在共享文件夹或 wsl2 的 /mnt 下编译不出来？
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-qemu-gdb-si" class="md-nav__link">
+    2 为什么 QEMU &amp; GDB 使用 si 单指令调试遇到模式切换时无法正常执行？
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-gdb-next-finish" class="md-nav__link">
+    3 为什么我不能在 GDB 中使用 next 或者 finish ?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-debug-next-finish" class="md-nav__link">
+    4 为什么我在内核中添加了 debug 信息，但是还是没法使用 next 或者 finish ?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-start_kernel" class="md-nav__link">
+    5  为什么我在 start_kernel 处不能正常使用断点？
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-lab1-riscv64-elf-unknown-gcc-no-such-file-or-directory" class="md-nav__link">
+    6 为什么 Lab1 中提示 riscv64-elf-unknown-gcc: No such file or directory ?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-lab1-c" class="md-nav__link">
+    7 为什么 Lab1 中我的 C 语言函数的参数无法正确传入？
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-puti-uint64-32bits" class="md-nav__link">
+    8 为什么我把 puti 的参数类型替换成 uint64 还是只能打印出 32bits 的值？
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-qemu" class="md-nav__link">
+    9 为什么我的 QEMU 会 “卡住”？
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-satp-gdb-multiarch-segmentation-fault" class="md-nav__link">
+    10 为什么我在设置 satp 后导致了 gdb-multiarch 的 segmentation fault ?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-vmlinuxldss-include-typesh" class="md-nav__link">
+    11 为什么在 vmlinux.lds.S 中会 #include "types.h"?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-uapp" class="md-nav__link">
+    12 uapp 明明已经在内存里了，为什么还要被拷贝一次才能运行？
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#13-sret-instruction-page-fault" class="md-nav__link">
+    13 为什么我 sret 到用户程序的第一条指令时会 Instruction Page Fault?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#14-uapp-vma-mmap" class="md-nav__link">
+    14 uapp 要怎么拷贝到内存里？是要我们直接实现 VMA 和 mmap 吗？
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+
+<h1 id="_1">常见问题及解答</h1>
+<!-- - [常见问题及解答](#常见问题及解答)
+  - [1 为什么我把 Linux 源码放在共享文件夹或 wsl2 的 `/mnt` 下编译不出来？](#1-为什么我把-linux-源码放在共享文件夹或-wsl2-的-mnt-下编译不出来)
+  - [2 为什么 QEMU & GDB 使用 `si` 单指令调试遇到模式切换时无法正常执行？](#2-为什么-qemu--gdb-使用-si-单指令调试遇到模式切换时无法正常执行)
+  - [3 为什么我不能在 GDB 中使用 `next` 或者 `finish` ?](#3-为什么我不能在-gdb-中使用-next-或者-finish-)
+  - [4 为什么我在内核中添加了 debug 信息，但是还是没法使用 `next` 或者 `finish` ?](#4-为什么我在内核中添加了-debug-信息但是还是没法使用-next-或者-finish-)
+  - [5  为什么我在 `start_kernel` 处不能正常使用断点？](#5--为什么我在-start_kernel-处不能正常使用断点)
+  - [6 为什么 Lab1 中提示 `riscv64-elf-unknown-gcc: No such file or directory` ?](#6-为什么-lab1-中提示-riscv64-elf-unknown-gcc-no-such-file-or-directory-)
+  - [7 为什么 Lab1 中我的 C 语言函数的参数无法正确传入？](#7-为什么-lab1-中我的-c-语言函数的参数无法正确传入)
+  - [8 为什么我把 `puti` 的参数类型替换成 `uint64` 还是只能打印出 32bits 的值？](#8-为什么我把-puti-的参数类型替换成-uint64-还是只能打印出-32bits-的值)
+  - [9 为什么我的 QEMU 会 “卡住”？](#9-为什么我的-QEMU-会-“卡住”？)
+  - [10 为什么我在设置 `satp` 后导致了 `gdb-multiarch` 的 `segmentation fault` ?](#10-为什么我在设置-satp-后导致了-gdb-multiarch-的-segmentation-fault)
+  - [11 -->
+
+<p>首先需要明确的是，本次实验中的所有操作都不应该经由 Windows 中的文件系统，请直接在 <strong>虚拟机或 Linux 物理机</strong> 中直接完成。</p>
+<h2 id="1-linux-wsl2-mnt">1 为什么我把 Linux 源码放在共享文件夹或 wsl2 的 <code>/mnt</code> 下编译不出来？</h2>
+<p>这种情况下，Linux 在使用 Windows 上的文件系统。请使用 <code>wget</code> 等工具将 Linux 源码下载至容器内目录<strong>而非共享目录或 <code>/mnt</code> 目录下的任何位置</strong>，然后执行编译。</p>
+<h2 id="2-qemu-gdb-si">2 为什么 QEMU &amp; GDB 使用 <code>si</code> 单指令调试遇到模式切换时无法正常执行？</h2>
+<p>在遇到诸如 <code>mret</code>, <code>sret</code> 等指令造成的模式切换时，<code>si</code> 指令会失效，可能表现为程序开始不停跑，影响对程序运行行为的判断。</p>
+<p>一个解决方法是在程序<strong>预期跳转</strong>的位置打上断点，断点不会受到模式切换的影响，比如：</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="o">(</span>gdb<span class="o">)</span><span class="w"> </span>i<span class="w"> </span>r<span class="w"> </span>sepc<span class="w">    </span>
+sepc<span class="w">        </span>0x8000babe
+<span class="o">(</span>gdb<span class="o">)</span><span class="w"> </span>b<span class="w"> </span>*<span class="w"> </span>0x8000babe
+Breakpoint<span class="w"> </span><span class="m">1</span><span class="w"> </span>at<span class="w"> </span>0x8000babe
+<span class="o">(</span>gdb<span class="o">)</span><span class="w"> </span>si<span class="w">    </span><span class="c1"># 或者使用 c</span>
+Breakpoint<span class="w"> </span><span class="m">1</span>,<span class="w"> </span>0x000000008000babe<span class="w"> </span><span class="k">in</span><span class="w"> </span>_never_gonna_give_you_up<span class="w"> </span><span class="o">()</span>
+...
+</code></pre></div></td></tr></table></div>
+<p>这样就可以看到断点被触发，可以继续调试了。</p>
+<h2 id="3-gdb-next-finish">3 为什么我不能在 GDB 中使用 <code>next</code> 或者 <code>finish</code> ?</h2>
+<p>这两条命令都依赖在内核中添加的调试信息，可以通过 <code>menuconfig</code> 进行配置添加。我们在实验中没有对这部分内容作要求，可以自行 Google 探索。</p>
+<h2 id="4-debug-next-finish">4 为什么我在内核中添加了 debug 信息，但是还是没法使用 <code>next</code> 或者 <code>finish</code> ?</h2>
+<p>可能你在配置内核时已经添加了调试信息，但是并没有在 <strong>QEMU运行的其他部分</strong> 添加。例如 SRAM 中对 <code>march</code> 进行配置的过程，以及 opensbi 中的所有部分，都缺少调试信息。所以才无法按照函数的层级进行调试。我们在实验中没有对这部分内容作要求，可以自行 Google 探索。</p>
+<h2 id="5-start_kernel">5  为什么我在 <code>start_kernel</code> 处不能正常使用断点？</h2>
+<p>在以下版本中，这个断点能够正常被打上并触发</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span></pre></div></td><td class="code"><div><pre><span></span><code>GNU gdb (Ubuntu 12.0.90-0ubuntu1) 12.0.90
+QEMU emulator version 6.2.0 (Debian 1:6.2+dfsg-2ubuntu6.3)
+RISC-V GNU Toolchain (Ubuntu 11.2.0-16ubuntu1) 11.2.0
+linux-6.0-rc5/linux-5.19.9
+</code></pre></div></td></tr></table></div>
+<h2 id="6-lab1-riscv64-elf-unknown-gcc-no-such-file-or-directory">6 为什么 Lab1 中提示 <code>riscv64-elf-unknown-gcc: No such file or directory</code> ?</h2>
+<p>我们更新了工具链，请使用 <code>git pull</code> 来更新仓库信息，然后使用 <code>make clean</code> 清除原先的编译产物。</p>
+<h2 id="7-lab1-c">7 为什么 Lab1 中我的 C 语言函数的参数无法正确传入？</h2>
+<p>确认自己是否在 <code>head.S</code> 里的 <code>_start</code> 函数中正确设置了 <code>sp</code>，正常情况下它的值应该是 <code>0x8020XXXX</code>。未设置 <code>sp</code> 会使栈上的值不正确且无法写入。</p>
+<h2 id="8-puti-uint64-32bits">8 为什么我把 <code>puti</code> 的参数类型替换成 <code>uint64</code> 还是只能打印出 32bits 的值？</h2>
+<p><strong>强烈建议</strong>把 <code>uint64</code> 的定义替换为 <code>unsigned long long</code> 而不是现在使用的 <code>unsigned long</code>，因为前者在32位和64位的平台上的长度都是64位，而后者在32位的平台上是32位的。</p>
+<h2 id="9-qemu">9 为什么我的 QEMU 会 “卡住”？</h2>
+<p><code>qemu-system</code> 本身作为一个模拟器，是不会直接卡死的，如果你在 <code>si</code> 或者 <code>c</code> 后，QEMU 看起来失去了响应，那么极有可能是程序运行到了意想不到的地方。例如在写入 <code>satp</code> 后，如果部分 bit 没有成功设置，那么可能会直接跳进 <code>trap</code>。而且在前面的实验中我们也发现了，在发生特权级切换或者发生陷入时，<code>si</code> 是有可能无法触发的，这种情况下就需要你在程序可能到达的地方都打上断点来暂停 QEMU 的执行了。</p>
+<h2 id="10-satp-gdb-multiarch-segmentation-fault">10 为什么我在设置 <code>satp</code> 后导致了 <code>gdb-multiarch</code> 的 <code>segmentation fault</code> ?</h2>
+<p>因为 <code>satp</code> 或者各级页表项设置有问题。比如检查一下我们之前一直忽略的页表项里 U-bit 设置好了没有。</p>
+<h2 id="11-vmlinuxldss-include-typesh">11 为什么在 <code>vmlinux.lds.S</code> 中会 <code>#include "types.h"</code>?</h2>
+<p>因为我们实验代码存在一些历史限制没来得及修改，在 <code>vmlinux.lds.S</code> 中有 <code>#include "defs.h"</code>，然后之前又没有提醒同学不要在 <code>defs.h</code> 里面添加东西，导致在 <code>defs.h</code>中添加的内容阻碍了 <code>vmlinux.lds</code> 的正确生成。一个可行的做法是将 <code>defs.h</code> 中除了宏定义以外的部分全部去除（包括宏include），然后将这些去掉的部分添加到其他的头文件里以供使用。</p>
+<h2 id="12-uapp">12 <code>uapp</code> 明明已经在内存里了，为什么还要被拷贝一次才能运行？</h2>
+<p>因为我们在实验中不准备引入磁盘驱动，所以将内存的一部分作为 <code>ramdisk</code>, 也就是说有一段内存被我们当成了硬盘。这段内存就是从 <code>uapp_start</code>  到 <code>uapp_end</code> 的空间，所以我们需要像操作磁盘一样操作这段内存。在运行磁盘上的程序前，我们需要将其拷贝到我们为程序分配的内存空间中，并依照 Elf Header 的要求映射到用户能访问的地址空间。这时候用户就能访问我们从磁盘拷贝到内存中的数据和代码了。</p>
+<h2 id="13-sret-instruction-page-fault">13 为什么我 <code>sret</code> 到用户程序的第一条指令时会 Instruction Page Fault?</h2>
+<p>大概率是因为没有设置好页表项里的 U-bit, 详细可以读一下 Privileged Spec. 也有可能你没有将内存映射到正确的位置上。</p>
+<h2 id="14-uapp-vma-mmap">14 <code>uapp</code> 要怎么拷贝到内存里？是要我们直接实现 VMA 和 <code>mmap</code> 吗？</h2>
+<p>只要一个一个字节地将内容复制到我们使用 <code>alloc_pages</code> 或者 <code>kalloc</code> 开辟的内存中即可，VMA 和 <code>mmap</code> 将在 Lab6 或之后才会引入，暂时不用同学们实现。</p>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+          <a href="#" class="md-top md-icon" data-md-component="top" hidden>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+            Back to top
+          </a>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.top"], "search": "../assets/javascripts/workers/search.e5c33ebb.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.ba449ae6.min.js"></script>
+      
+        <script src="../javascripts/mathjax.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

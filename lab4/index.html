@@ -1,0 +1,1445 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://zju-sec.github.io/os22fall-stu/lab4/">
+      
+      
+        <link rel="prev" href="../lab3/">
+      
+      
+        <link rel="next" href="../lab5/">
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.3">
+    
+    
+      
+        <title>实验指导四 - 浙江大学22年秋操作系统实验</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.6b71719e.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.2505c338.min.css">
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CCascadia:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Cascadia"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="" data-md-color-accent="">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#lab-4-rv64" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="浙江大学22年秋操作系统实验" class="md-header__button md-logo" aria-label="浙江大学22年秋操作系统实验" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            浙江大学22年秋操作系统实验
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              实验指导四
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      <form class="md-header__option" data-md-component="palette">
+        
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="" data-md-color-accent=""  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+          
+            <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6zm0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4zM7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+            </label>
+          
+        
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="" data-md-color-accent=""  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+          
+            <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3Z"/></svg>
+            </label>
+          
+        
+      </form>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/ZJU-SEC/os22fall-stu" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    ZJU-SEC/os22fall-stu
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="浙江大学22年秋操作系统实验" class="md-nav__button md-logo" aria-label="浙江大学22年秋操作系统实验" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    浙江大学22年秋操作系统实验
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/ZJU-SEC/os22fall-stu" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    ZJU-SEC/os22fall-stu
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab0/" class="md-nav__link">
+        实验指导零
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab1/" class="md-nav__link">
+        实验指导一
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab2/" class="md-nav__link">
+        实验指导二
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab3/" class="md-nav__link">
+        实验指导三
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          实验指导四
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        实验指导四
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    1 实验目的
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    2 实验环境
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    3 背景知识
+  </a>
+  
+    <nav class="md-nav" aria-label="3 背景知识">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#30" class="md-nav__link">
+    3.0 前言
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#31-kernel" class="md-nav__link">
+    3.1 Kernel 的虚拟内存布局
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-risc-v-virtual-memory-system-sv39" class="md-nav__link">
+    3.2 RISC-V Virtual-Memory System (Sv39)
+  </a>
+  
+    <nav class="md-nav" aria-label="3.2 RISC-V Virtual-Memory System (Sv39)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#321-satp-registersupervisor-address-translation-and-protection-register" class="md-nav__link">
+    3.2.1 satp Register（Supervisor Address Translation and Protection Register）
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#322-risc-v-sv39-virtual-address-and-physical-address" class="md-nav__link">
+    3.2.2 RISC-V Sv39 Virtual Address and Physical Address
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#323-risc-v-sv39-page-table-entry" class="md-nav__link">
+    3.2.3 RISC-V Sv39 Page Table Entry
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#324-risc-v-address-translation" class="md-nav__link">
+    3.2.4 RISC-V Address Translation
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    4 实验步骤
+  </a>
+  
+    <nav class="md-nav" aria-label="4 实验步骤">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41" class="md-nav__link">
+    4.1 准备工程
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42" class="md-nav__link">
+    4.2 开启虚拟内存映射。
+  </a>
+  
+    <nav class="md-nav" aria-label="4.2 开启虚拟内存映射。">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#421-setup_vm" class="md-nav__link">
+    4.2.1 setup_vm 的实现
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#422-setup_vm_final" class="md-nav__link">
+    4.2.2 setup_vm_final 的实现
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43" class="md-nav__link">
+    4.3 编译及测试
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    思考题
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    作业提交
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab5/" class="md-nav__link">
+        实验指导五
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab6/" class="md-nav__link">
+        实验指导六
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../faq/" class="md-nav__link">
+        常见问题及解答
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    1 实验目的
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    2 实验环境
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    3 背景知识
+  </a>
+  
+    <nav class="md-nav" aria-label="3 背景知识">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#30" class="md-nav__link">
+    3.0 前言
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#31-kernel" class="md-nav__link">
+    3.1 Kernel 的虚拟内存布局
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-risc-v-virtual-memory-system-sv39" class="md-nav__link">
+    3.2 RISC-V Virtual-Memory System (Sv39)
+  </a>
+  
+    <nav class="md-nav" aria-label="3.2 RISC-V Virtual-Memory System (Sv39)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#321-satp-registersupervisor-address-translation-and-protection-register" class="md-nav__link">
+    3.2.1 satp Register（Supervisor Address Translation and Protection Register）
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#322-risc-v-sv39-virtual-address-and-physical-address" class="md-nav__link">
+    3.2.2 RISC-V Sv39 Virtual Address and Physical Address
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#323-risc-v-sv39-page-table-entry" class="md-nav__link">
+    3.2.3 RISC-V Sv39 Page Table Entry
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#324-risc-v-address-translation" class="md-nav__link">
+    3.2.4 RISC-V Address Translation
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    4 实验步骤
+  </a>
+  
+    <nav class="md-nav" aria-label="4 实验步骤">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41" class="md-nav__link">
+    4.1 准备工程
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42" class="md-nav__link">
+    4.2 开启虚拟内存映射。
+  </a>
+  
+    <nav class="md-nav" aria-label="4.2 开启虚拟内存映射。">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#421-setup_vm" class="md-nav__link">
+    4.2.1 setup_vm 的实现
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#422-setup_vm_final" class="md-nav__link">
+    4.2.2 setup_vm_final 的实现
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43" class="md-nav__link">
+    4.3 编译及测试
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    思考题
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    作业提交
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+
+<h1 id="lab-4-rv64">Lab 4: RV64 虚拟内存管理</h1>
+<h2 id="1">1 实验目的</h2>
+<ul>
+<li>学习虚拟内存的相关知识，实现物理地址到虚拟地址的切换。</li>
+<li>了解 RISC-V 架构中 SV39 分页模式，实现虚拟地址到物理地址的映射，并对不同的段进行相应的权限设置。</li>
+</ul>
+<h2 id="2">2 实验环境</h2>
+<ul>
+<li>Environment in previous labs</li>
+</ul>
+<h2 id="3">3 背景知识</h2>
+<h3 id="30">3.0 前言</h3>
+<p>在 lab3 中我们赋予了 OS 对多个线程调度以及并发执行的能力，由于目前这些线程都是内核线程，因此他们可以共享运行空间，即运行不同线程对空间的修改是相互可见的。但是如果我们需要线程相互<strong>隔离</strong>，以及在多线程的情况下更加<strong>高效</strong>的使用内存，就必须引入<code>虚拟内存</code>这个概念。</p>
+<p>虚拟内存可以为正在运行的进程提供独立的内存空间，制造一种每个进程的内存都是独立的假象。同时虚拟内存到物理内存的映射也包含了对内存的访问权限，方便 Kernel 完成权限检查。</p>
+<p>在本次实验中，我们需要关注 OS 如何<strong>开启虚拟地址</strong>以及通过设置页表来实现<strong>地址映射</strong>和<strong>权限控制</strong>。</p>
+<h3 id="31-kernel">3.1 Kernel 的虚拟内存布局</h3>
+<p><div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span></pre></div></td><td class="code"><div><pre><span></span><code>start_address           end_address
+    0x0                 0x3fffffffff
+     │                       │
+┌────┘                 ┌─────┘
+↓        256G          ↓                                
+┌───────────────────────┬──────────┬────────────────┐
+│      User Space       │    ...   │  Kernel Space  │
+└───────────────────────┴──────────┴────────────────┘
+                                    ↑    256G      ↑
+                      ┌─────────────┘              │ 
+                      │                            │
+              0xffffffc000000000          0xffffffffffffffff
+                start_address                 end_address
+</code></pre></div></td></tr></table></div>
+通过上图我们可以看到 RV64 将 <code>0x0000004000000000</code> 以下的虚拟空间作为 <code>user space</code>。将 <code>0xffffffc000000000</code> 及以上的虚拟空间作为 <code>kernel space</code>。由于我们还未引入用户态程序，目前我们只需要关注 <code>kernel space</code>。</p>
+<p>具体的虚拟内存布局可以<a href="https://elixir.bootlin.com/linux/v5.15/source/Documentation/riscv/vm-layout.rst">参考这里</a>。</p>
+<blockquote>
+<p>在 <code>RISC-V Linux Kernel Space</code> 中有一段区域被称为 <code>direct mapping area</code>，为了方便 kernel 可以高效率的访问 RAM，kernel 会预先把所有物理内存都映射至这一块区域 ( PA + OFFSET == VA )， 这种映射也被称为 <code>linear mapping</code>。在 RISC-V Linux Kernel 中这一段区域为 <code>0xffffffe000000000 ~ 0xffffffff00000000</code>, 共 124 GB 。</p>
+</blockquote>
+<h3 id="32-risc-v-virtual-memory-system-sv39">3.2 RISC-V Virtual-Memory System (Sv39)</h3>
+<h4 id="321-satp-registersupervisor-address-translation-and-protection-register">3.2.1 <code>satp</code> Register（Supervisor Address Translation and Protection Register）</h4>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="w"> </span><span class="mi">63</span><span class="w">      </span><span class="mi">60</span><span class="w"> </span><span class="mi">59</span><span class="w">                  </span><span class="mi">44</span><span class="w"> </span><span class="mi">43</span><span class="w">                                </span><span class="mi">0</span>
+<span class="w"> </span><span class="o">---------------------------------------------------------------------</span>
+<span class="o">|</span><span class="w">   </span><span class="n">MODE</span><span class="w">   </span><span class="o">|</span><span class="w">         </span><span class="n">ASID</span><span class="w">         </span><span class="o">|</span><span class="w">                </span><span class="n">PPN</span><span class="w">                </span><span class="o">|</span>
+<span class="w"> </span><span class="o">---------------------------------------------------------------------</span>
+</code></pre></div></td></tr></table></div>
+<ul>
+<li>MODE 字段的取值如下图：
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="w">                             </span><span class="n">RV</span><span class="w"> </span><span class="mi">64</span>
+<span class="w">     </span><span class="o">----------------------------------------------------------</span>
+<span class="w">    </span><span class="o">|</span><span class="w">  </span><span class="n">Value</span><span class="w">  </span><span class="o">|</span><span class="w">  </span><span class="n">Name</span><span class="w">  </span><span class="o">|</span><span class="w">  </span><span class="n">Description</span><span class="w">                          </span><span class="o">|</span>
+<span class="w">    </span><span class="o">|----------------------------------------------------------|</span>
+<span class="w">    </span><span class="o">|</span><span class="w">    </span><span class="mi">0</span><span class="w">    </span><span class="o">|</span><span class="w"> </span><span class="n">Bare</span><span class="w">   </span><span class="o">|</span><span class="w"> </span><span class="n">No</span><span class="w"> </span><span class="n">translation</span><span class="w"> </span><span class="n">or</span><span class="w"> </span><span class="n">protection</span><span class="w">          </span><span class="o">|</span>
+<span class="w">    </span><span class="o">|</span><span class="w">  </span><span class="mi">1</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">7</span><span class="w">  </span><span class="o">|</span><span class="w"> </span><span class="o">---</span><span class="w">    </span><span class="o">|</span><span class="w"> </span><span class="n">Reserved</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">standard</span><span class="w"> </span><span class="n">use</span><span class="w">             </span><span class="o">|</span>
+<span class="w">    </span><span class="o">|</span><span class="w">    </span><span class="mi">8</span><span class="w">    </span><span class="o">|</span><span class="w"> </span><span class="n">Sv39</span><span class="w">   </span><span class="o">|</span><span class="w"> </span><span class="n">Page</span><span class="o">-</span><span class="n">based</span><span class="w"> </span><span class="mi">39</span><span class="w"> </span><span class="n">bit</span><span class="w"> </span><span class="n">virtual</span><span class="w"> </span><span class="n">addressing</span><span class="w">  </span><span class="o">|</span><span class="w"> </span><span class="o">&lt;--</span><span class="w"> </span><span class="n">我们使用的mode</span>
+<span class="w">    </span><span class="o">|</span><span class="w">    </span><span class="mi">9</span><span class="w">    </span><span class="o">|</span><span class="w"> </span><span class="n">Sv48</span><span class="w">   </span><span class="o">|</span><span class="w"> </span><span class="n">Page</span><span class="o">-</span><span class="n">based</span><span class="w"> </span><span class="mi">48</span><span class="w"> </span><span class="n">bit</span><span class="w"> </span><span class="n">virtual</span><span class="w"> </span><span class="n">addressing</span><span class="w">  </span><span class="o">|</span>
+<span class="w">    </span><span class="o">|</span><span class="w">    </span><span class="mi">10</span><span class="w">   </span><span class="o">|</span><span class="w"> </span><span class="n">Sv57</span><span class="w">   </span><span class="o">|</span><span class="w"> </span><span class="n">Page</span><span class="o">-</span><span class="n">based</span><span class="w"> </span><span class="mi">57</span><span class="w"> </span><span class="n">bit</span><span class="w"> </span><span class="n">virtual</span><span class="w"> </span><span class="n">addressing</span><span class="w">  </span><span class="o">|</span>
+<span class="w">    </span><span class="o">|</span><span class="w">    </span><span class="mi">11</span><span class="w">   </span><span class="o">|</span><span class="w"> </span><span class="n">Sv64</span><span class="w">   </span><span class="o">|</span><span class="w"> </span><span class="n">Page</span><span class="o">-</span><span class="n">based</span><span class="w"> </span><span class="mi">64</span><span class="w"> </span><span class="n">bit</span><span class="w"> </span><span class="n">virtual</span><span class="w"> </span><span class="n">addressing</span><span class="w">  </span><span class="o">|</span>
+<span class="w">    </span><span class="o">|</span><span class="w"> </span><span class="mi">12</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">13</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="o">---</span><span class="w">    </span><span class="o">|</span><span class="w"> </span><span class="n">Reserved</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">standard</span><span class="w"> </span><span class="n">use</span><span class="w">             </span><span class="o">|</span>
+<span class="w">    </span><span class="o">|</span><span class="w"> </span><span class="mi">14</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">15</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="o">---</span><span class="w">    </span><span class="o">|</span><span class="w"> </span><span class="n">Reserved</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">standard</span><span class="w"> </span><span class="n">use</span><span class="w">             </span><span class="o">|</span>
+<span class="w">     </span><span class="o">-----------------------------------------------------------</span>
+</code></pre></div></td></tr></table></div></li>
+<li>ASID ( Address Space Identifier ) ： 此次实验中直接置 0 即可。</li>
+<li>PPN ( Physical Page Number ) ：顶级页表的物理页号。我们的物理页的大小为 4KB， PA &gt;&gt; 12 == PPN。</li>
+<li>具体介绍请阅读 <a href="https://www.five-embeddev.com/riscv-isa-manual/latest/supervisor.html#sec:satp">RISC-V Privileged Spec 4.1.10</a> 。</li>
+</ul>
+<h4 id="322-risc-v-sv39-virtual-address-and-physical-address">3.2.2 RISC-V Sv39 Virtual Address and Physical Address</h4>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="w">     </span><span class="mi">38</span><span class="w">        </span><span class="mi">30</span><span class="w"> </span><span class="mi">29</span><span class="w">        </span><span class="mi">21</span><span class="w"> </span><span class="mi">20</span><span class="w">        </span><span class="mi">12</span><span class="w"> </span><span class="mi">11</span><span class="w">                           </span><span class="mi">0</span>
+<span class="w">     </span><span class="o">---------------------------------------------------------------------</span>
+<span class="w">    </span><span class="o">|</span><span class="w">   </span><span class="n">VPN</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="w">   </span><span class="o">|</span><span class="w">   </span><span class="n">VPN</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w">   </span><span class="o">|</span><span class="w">   </span><span class="n">VPN</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w">   </span><span class="o">|</span><span class="w">          </span><span class="n">page</span><span class="w"> </span><span class="n">offset</span><span class="w">         </span><span class="o">|</span>
+<span class="w">     </span><span class="o">---------------------------------------------------------------------</span>
+<span class="w">                            </span><span class="n">Sv39</span><span class="w"> </span><span class="n">virtual</span><span class="w"> </span><span class="n">address</span>
+</code></pre></div></td></tr></table></div>
+<p><div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="w"> </span><span class="mi">55</span><span class="w">                </span><span class="mi">30</span><span class="w"> </span><span class="mi">29</span><span class="w">        </span><span class="mi">21</span><span class="w"> </span><span class="mi">20</span><span class="w">        </span><span class="mi">12</span><span class="w"> </span><span class="mi">11</span><span class="w">                           </span><span class="mi">0</span>
+<span class="w"> </span><span class="o">-----------------------------------------------------------------------------</span>
+<span class="o">|</span><span class="w">       </span><span class="n">PPN</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="w">       </span><span class="o">|</span><span class="w">   </span><span class="n">PPN</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w">   </span><span class="o">|</span><span class="w">   </span><span class="n">PPN</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w">   </span><span class="o">|</span><span class="w">          </span><span class="n">page</span><span class="w"> </span><span class="n">offset</span><span class="w">         </span><span class="o">|</span>
+<span class="w"> </span><span class="o">-----------------------------------------------------------------------------</span>
+<span class="w">                            </span><span class="n">Sv39</span><span class="w"> </span><span class="n">physical</span><span class="w"> </span><span class="n">address</span>
+</code></pre></div></td></tr></table></div>
+* Sv39 模式定义物理地址有 56 位，虚拟地址有 64 位。但是，虚拟地址的 64 位只有低 39 位有效。通过虚拟内存布局图我们可以发现，其 63-39 位为 0 时代表 user space address， 为 1 时 代表 kernel space address。
+* Sv39 支持三级页表结构，VPN<a href="Virtual Page Number">2-0</a>分别代表每级页表的<code>虚拟页号</code>，PPN<a href="Physical Page Number">2-0</a>分别代表每级页表的<code>物理页号</code>。物理地址和虚拟地址的低12位表示页内偏移（page offset）。
+* 具体介绍请阅读 <a href="https://www.five-embeddev.com/riscv-isa-manual/latest/supervisor.html#sec:sv39">RISC-V Privileged Spec 4.4.1</a> 。</p>
+<h4 id="323-risc-v-sv39-page-table-entry">3.2.3 RISC-V Sv39 Page Table Entry</h4>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="w"> </span><span class="mi">63</span><span class="w">      </span><span class="mi">54</span><span class="w"> </span><span class="mi">53</span><span class="w">        </span><span class="mi">28</span><span class="w"> </span><span class="mi">27</span><span class="w">        </span><span class="mi">19</span><span class="w"> </span><span class="mi">18</span><span class="w">        </span><span class="mi">10</span><span class="w"> </span><span class="mi">9</span><span class="w">   </span><span class="mi">8</span><span class="w"> </span><span class="mi">7</span><span class="w"> </span><span class="mi">6</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="mi">0</span>
+<span class="w"> </span><span class="o">-----------------------------------------------------------------------</span>
+<span class="o">|</span><span class="w"> </span><span class="n">Reserved</span><span class="w"> </span><span class="o">|</span><span class="w">   </span><span class="n">PPN</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="w">   </span><span class="o">|</span><span class="w">   </span><span class="n">PPN</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w">   </span><span class="o">|</span><span class="w">   </span><span class="n">PPN</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w">   </span><span class="o">|</span><span class="w"> </span><span class="n">RSW</span><span class="w"> </span><span class="o">|</span><span class="n">D</span><span class="o">|</span><span class="n">A</span><span class="o">|</span><span class="n">G</span><span class="o">|</span><span class="n">U</span><span class="o">|</span><span class="n">X</span><span class="o">|</span><span class="n">W</span><span class="o">|</span><span class="n">R</span><span class="o">|</span><span class="n">V</span><span class="o">|</span>
+<span class="w"> </span><span class="o">-----------------------------------------------------------------------</span>
+<span class="w">                                                     </span><span class="o">|</span><span class="w">   </span><span class="o">|</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="o">|</span>
+<span class="w">                                                     </span><span class="o">|</span><span class="w">   </span><span class="o">|</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="err">`</span><span class="o">----</span><span class="w"> </span><span class="n">V</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">Valid</span>
+<span class="w">                                                     </span><span class="o">|</span><span class="w">   </span><span class="o">|</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="err">`</span><span class="o">------</span><span class="w"> </span><span class="n">R</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">Readable</span>
+<span class="w">                                                     </span><span class="o">|</span><span class="w">   </span><span class="o">|</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="err">`</span><span class="o">--------</span><span class="w"> </span><span class="n">W</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">Writable</span>
+<span class="w">                                                     </span><span class="o">|</span><span class="w">   </span><span class="o">|</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="err">`</span><span class="o">----------</span><span class="w"> </span><span class="n">X</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">Executable</span>
+<span class="w">                                                     </span><span class="o">|</span><span class="w">   </span><span class="o">|</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="err">`</span><span class="o">------------</span><span class="w"> </span><span class="n">U</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">User</span>
+<span class="w">                                                     </span><span class="o">|</span><span class="w">   </span><span class="o">|</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="err">`</span><span class="o">--------------</span><span class="w"> </span><span class="n">G</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">Global</span>
+<span class="w">                                                     </span><span class="o">|</span><span class="w">   </span><span class="o">|</span><span class="w"> </span><span class="err">`</span><span class="o">----------------</span><span class="w"> </span><span class="n">A</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">Accessed</span>
+<span class="w">                                                     </span><span class="o">|</span><span class="w">   </span><span class="err">`</span><span class="o">------------------</span><span class="w"> </span><span class="n">D</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">Dirty</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">page</span><span class="w"> </span><span class="n">directory</span><span class="p">)</span>
+<span class="w">                                                     </span><span class="err">`</span><span class="o">----------------------</span><span class="w"> </span><span class="n">Reserved</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">supervisor</span><span class="w"> </span><span class="n">software</span>
+</code></pre></div></td></tr></table></div>
+<ul>
+<li>0 ～ 9 bit: protection bits<ul>
+<li>V : 有效位，当 V = 0, 访问该 PTE 会产生 Pagefault。</li>
+<li>R : R = 1 该页可读。</li>
+<li>W : W = 1 该页可写。</li>
+<li>X : X = 1 该页可执行。</li>
+<li>U , G , A , D , RSW 本次实验中设置为 0 即可。</li>
+</ul>
+</li>
+<li>具体介绍请阅读 <a href="https://www.five-embeddev.com/riscv-isa-manual/latest/supervisor.html#sec:sv39">RISC-V Privileged Spec 4.4.1</a></li>
+</ul>
+<h4 id="324-risc-v-address-translation">3.2.4 RISC-V Address Translation</h4>
+<p>虚拟地址转化为物理地址流程图如下，具体描述见 <a href="https://www.five-embeddev.com/riscv-isa-manual/latest/supervisor.html#sv32algorithm">RISC-V Privileged Spec 4.3.2</a> :
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span></pre></div></td><td class="code"><div><pre><span></span><code>                                Virtual Address                                     Physical Address
+
+                          9             9            9              12          55        12 11       0
+   ┌────────────────┬────────────┬────────────┬─────────────┬────────────────┐ ┌────────────┬──────────┐
+   │                │   VPN[2]   │   VPN[1]   │   VPN[0]    │     OFFSET     │ │     PPN    │  OFFSET  │
+   └────────────────┴────┬───────┴─────┬──────┴──────┬──────┴───────┬────────┘ └────────────┴──────────┘
+                         │             │             │              │                 ▲          ▲
+                         │             │             │              │                 │          │
+                         │             │             │              │                 │          │
+┌────────────────────────┘             │             │              │                 │          │
+│                                      │             │              │                 │          │
+│                                      │             │              └─────────────────┼──────────┘
+│    ┌─────────────────┐               │             │                                │
+│511 │                 │  ┌────────────┘             │                                │
+│    │                 │  │                          │                                │
+│    │                 │  │     ┌─────────────────┐  │                                │
+│    │                 │  │ 511 │                 │  │                                │
+│    │                 │  │     │                 │  │                                │
+│    │                 │  │     │                 │  │     ┌─────────────────┐        │
+│    │   44       10   │  │     │                 │  │ 511 │                 │        │
+│    ├────────┬────────┤  │     │                 │  │     │                 │        │
+└───►│   PPN  │  flags │  │     │                 │  │     │                 │        │
+     ├────┬───┴────────┤  │     │   44       10   │  │     │                 │        │
+     │    │            │  │     ├────────┬────────┤  │     │                 │        │
+     │    │            │  └────►│   PPN  │  flags │  │     │                 │        │
+     │    │            │        ├────┬───┴────────┤  │     │   44       10   │        │
+     │    │            │        │    │            │  │     ├────────┬────────┤        │
+   1 │    │            │        │    │            │  └────►│   PPN  │  flags │        │
+     │    │            │        │    │            │        ├────┬───┴────────┤        │
+   0 │    │            │        │    │            │        │    │            │        │
+     └────┼────────────┘      1 │    │            │        │    │            │        │
+     ▲    │                     │    │            │        │    └────────────┼────────┘
+     │    │                   0 │    │            │        │                 │
+     │    └────────────────────►└────┼────────────┘      1 │                 │
+     │                               │                     │                 │
+ ┌───┴────┐                          │                   0 │                 │
+ │  satp  │                          └────────────────────►└─────────────────┘
+ └────────┘
+</code></pre></div></td></tr></table></div></p>
+<h2 id="4">4 实验步骤</h2>
+<h3 id="41">4.1 准备工程</h3>
+<ul>
+<li>此次实验基于 lab3 同学所实现的代码进行。</li>
+<li>需要修改 <code>defs.h</code>, 在 <code>defs.h</code> <strong>添加</strong>如下内容：
+    <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="cp">#define OPENSBI_SIZE (0x200000)</span>
+
+<span class="cp">#define VM_START (0xffffffe000000000)</span>
+<span class="cp">#define VM_END   (0xffffffff00000000)</span>
+<span class="cp">#define VM_SIZE  (VM_END - VM_START)</span>
+
+<span class="cp">#define PA2VA_OFFSET (VM_START - PHY_START)</span>
+</code></pre></div></td></tr></table></div></li>
+<li>从 <code>repo</code> 同步以下代码: <code>vmlinux.lds.S</code>, <code>Makefile</code>。并按照以下步骤将这些文件正确放置。
+    <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span></pre></div></td><td class="code"><div><pre><span></span><code>.
+└── arch
+    └── riscv
+        └── kernel
+            ├── Makefile
+            └── vmlinux.lds.S
+</code></pre></div></td></tr></table></div>
+    这里我们通过 <code>vmlinux.lds.S</code> 模版生成 <code>vmlinux.lds</code>文件。链接脚本中的 <code>ramv</code> 代表 <code>VMA ( Virtual Memory Address )</code> 即虚拟地址，<code>ram</code> 则代表 <code>LMA ( Load Memory Address )</code>, 即我们 OS image 被 load 的地址，可以理解为物理地址。使用以上的 vmlinux.lds 进行编译之后，得到的 <code>System.map</code> 以及 <code>vmlinux</code> 采用的都是虚拟地址，方便之后 Debug。</li>
+</ul>
+<h3 id="42">4.2 开启虚拟内存映射。</h3>
+<p>在 RISC-V 中开启虚拟地址被分为了两步：<code>setup_vm</code> 以及 <code>setup_vm_final</code>，下面将介绍相关的具体实现。</p>
+<h4 id="421-setup_vm">4.2.1 <code>setup_vm</code> 的实现</h4>
+<ul>
+<li>将 0x80000000 开始的 1GB 区域进行两次映射，其中一次是等值映射 ( PA == VA ) ，另一次是将其映射至高地址 ( PA + PV2VA_OFFSET == VA )。如下图所示：
+  <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span></pre></div></td><td class="code"><div><pre><span></span><code>Physical Address
+-------------------------------------------
+                     | OpenSBI | Kernel |
+-------------------------------------------
+                     ^
+                0x80000000
+                     ├───────────────────────────────────────────────────┐
+                     |                                                   |
+Virtual Address      ↓                                                   ↓
+-----------------------------------------------------------------------------------------------
+                     | OpenSBI | Kernel |                                | OpenSBI | Kernel |
+-----------------------------------------------------------------------------------------------
+                     ^                                                   ^
+                0x80000000                                       0xffffffe000000000
+</code></pre></div></td></tr></table></div></li>
+<li>完成上述映射之后，通过 <code>relocate</code> 函数，完成对 <code>satp</code> 的设置，以及跳转到对应的虚拟地址。</li>
+<li>至此我们已经完成了虚拟地址的开启，之后我们运行的代码也都将在虚拟地址上运行。
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1">// arch/riscv/kernel/vm.c</span>
+
+<span class="cm">/* early_pgtbl: 用于 setup_vm 进行 1GB 的 映射。 */</span>
+<span class="kt">unsigned</span><span class="w"> </span><span class="kt">long</span><span class="w">  </span><span class="n">early_pgtbl</span><span class="p">[</span><span class="mi">512</span><span class="p">]</span><span class="w"> </span><span class="n">__attribute__</span><span class="p">((</span><span class="n">__aligned__</span><span class="p">(</span><span class="mh">0x1000</span><span class="p">)));</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">setup_vm</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="cm">/* </span>
+<span class="cm">    1. 由于是进行 1GB 的映射 这里不需要使用多级页表 </span>
+<span class="cm">    2. 将 va 的 64bit 作为如下划分： | high bit | 9 bit | 30 bit |</span>
+<span class="cm">        high bit 可以忽略</span>
+<span class="cm">        中间9 bit 作为 early_pgtbl 的 index</span>
+<span class="cm">        低 30 bit 作为 页内偏移 这里注意到 30 = 9 + 9 + 12， 即我们只使用根页表， 根页表的每个 entry 都对应 1GB 的区域。 </span>
+<span class="cm">    3. Page Table Entry 的权限 V | R | W | X 位设置为 1</span>
+<span class="cm">    */</span>
+<span class="p">}</span>
+</code></pre></div></td></tr></table></div>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1"># head.S</span>
+
+<span class="nl">_start:</span>
+
+<span class="w">    </span><span class="nf">call</span><span class="w"> </span><span class="no">setup_vm</span>
+<span class="w">    </span><span class="nf">call</span><span class="w"> </span><span class="no">relocate</span>
+
+<span class="w">    </span><span class="na">...</span>
+
+<span class="w">    </span><span class="nf">j</span><span class="w"> </span><span class="no">start_kernel</span>
+
+<span class="nl">relocate:</span>
+<span class="w">    </span><span class="c1"># set ra = ra + PA2VA_OFFSET</span>
+<span class="w">    </span><span class="c1"># set sp = sp + PA2VA_OFFSET (If you have set the sp before)</span>
+
+<span class="w">    </span><span class="c1">###################### </span>
+<span class="w">    </span><span class="c1">#   YOUR CODE HERE   #</span>
+<span class="w">    </span><span class="c1">######################</span>
+
+<span class="w">    </span><span class="c1"># set satp with early_pgtbl</span>
+
+<span class="w">    </span><span class="c1">###################### </span>
+<span class="w">    </span><span class="c1">#   YOUR CODE HERE   #</span>
+<span class="w">    </span><span class="c1">######################</span>
+
+<span class="w">    </span><span class="c1"># flush tlb</span>
+<span class="w">    </span><span class="nf">sfence.vma</span><span class="w"> </span><span class="no">zero</span><span class="p">,</span><span class="w"> </span><span class="no">zero</span>
+
+<span class="w">    </span><span class="c1"># flush icache</span>
+<span class="w">    </span><span class="nf">fence.i</span>
+
+<span class="w">    </span><span class="nf">ret</span>
+
+<span class="w">    </span><span class="na">.section</span><span class="w"> </span><span class="no">.bss.stack</span>
+<span class="w">    </span><span class="na">.globl</span><span class="w"> </span><span class="no">boot_stack</span>
+<span class="nl">boot_stack:</span>
+<span class="w">    </span><span class="na">...</span>
+</code></pre></div></td></tr></table></div></li>
+</ul>
+<blockquote>
+<p>Hint 1: <code>sfence.vma</code> 指令用于刷新 TLB</p>
+<p>Hint 2: <code>fence.i</code> 指令用于刷新 icache</p>
+<p>Hint 3: 在 set satp 前，我们只可以使用<strong>物理地址</strong>来打断点。设置 satp 之后，才可以使用虚拟地址打断点，同时之前设置的物理地址断点也会失效，需要删除</p>
+</blockquote>
+<h4 id="422-setup_vm_final">4.2.2 <code>setup_vm_final</code> 的实现</h4>
+<ul>
+<li>由于 setup_vm_final 中需要申请页面的接口， 应该在其之前完成内存管理初始化， 可能需要修改 mm.c 中的代码，mm.c 中初始化的函数接收的起始结束地址需要调整为虚拟地址。</li>
+<li>
+<p>对 所有物理内存 (128M) 进行映射，并设置正确的权限。
+  <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span></pre></div></td><td class="code"><div><pre><span></span><code>Physical Address
+     PHY_START                           PHY_END
+         ↓                                  ↓
+--------------------------------------------------------
+         | OpenSBI | Kernel |               |
+--------------------------------------------------------
+         ^                                  ^
+    0x80000000                              └───────────────────────────────────────────────────┐
+         └───────────────────────────────────────────────────┐                                  |
+                                                             |                                  |
+                                                          VM_START                              |
+Virtual Address                                              ↓                                  ↓
+----------------------------------------------------------------------------------------------------
+                                                             | OpenSBI | Kernel |               |
+-----------------------------------------------------------------------------------------------------
+                                                             ^
+                                                     0xffffffe000000000
+</code></pre></div></td></tr></table></div></p>
+</li>
+<li>
+<p>不再需要进行等值映射</p>
+</li>
+<li>不再需要将 OpenSBI 的映射至高地址，因为 OpenSBI 运行在 M 态， 直接使用的物理地址。</li>
+<li>采用三级页表映射。</li>
+<li>在 head.S 中 适当的位置调用 setup_vm_final 。
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1">// arch/riscv/kernel/vm.c </span>
+
+<span class="cm">/* swapper_pg_dir: kernel pagetable 根目录， 在 setup_vm_final 进行映射。 */</span>
+<span class="kt">unsigned</span><span class="w"> </span><span class="kt">long</span><span class="w">  </span><span class="n">swapper_pg_dir</span><span class="p">[</span><span class="mi">512</span><span class="p">]</span><span class="w"> </span><span class="n">__attribute__</span><span class="p">((</span><span class="n">__aligned__</span><span class="p">(</span><span class="mh">0x1000</span><span class="p">)));</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">setup_vm_final</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">memset</span><span class="p">(</span><span class="n">swapper_pg_dir</span><span class="p">,</span><span class="w"> </span><span class="mh">0x0</span><span class="p">,</span><span class="w"> </span><span class="n">PGSIZE</span><span class="p">);</span>
+
+<span class="w">    </span><span class="c1">// No OpenSBI mapping required</span>
+
+<span class="w">    </span><span class="c1">// mapping kernel text X|-|R|V</span>
+<span class="w">    </span><span class="n">create_mapping</span><span class="p">(...);</span>
+
+<span class="w">    </span><span class="c1">// mapping kernel rodata -|-|R|V</span>
+<span class="w">    </span><span class="n">create_mapping</span><span class="p">(...);</span>
+
+<span class="w">    </span><span class="c1">// mapping other memory -|W|R|V</span>
+<span class="w">    </span><span class="n">create_mapping</span><span class="p">(...);</span>
+
+<span class="w">    </span><span class="c1">// set satp with swapper_pg_dir</span>
+
+<span class="w">    </span><span class="n">YOUR</span><span class="w"> </span><span class="n">CODE</span><span class="w"> </span><span class="n">HERE</span>
+
+<span class="w">    </span><span class="c1">// flush TLB</span>
+<span class="w">    </span><span class="k">asm</span><span class="w"> </span><span class="k">volatile</span><span class="p">(</span><span class="s">&quot;sfence.vma zero, zero&quot;</span><span class="p">);</span>
+
+<span class="w">    </span><span class="c1">// flush icache</span>
+<span class="w">    </span><span class="k">asm</span><span class="w"> </span><span class="k">volatile</span><span class="p">(</span><span class="s">&quot;fence.i&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="k">return</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+<span class="cm">/* 创建多级页表映射关系 */</span>
+<span class="n">create_mapping</span><span class="p">(</span><span class="n">uint64</span><span class="w"> </span><span class="o">*</span><span class="n">pgtbl</span><span class="p">,</span><span class="w"> </span><span class="n">uint64</span><span class="w"> </span><span class="n">va</span><span class="p">,</span><span class="w"> </span><span class="n">uint64</span><span class="w"> </span><span class="n">pa</span><span class="p">,</span><span class="w"> </span><span class="n">uint64</span><span class="w"> </span><span class="n">sz</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">perm</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="cm">/*</span>
+<span class="cm">    pgtbl 为根页表的基地址</span>
+<span class="cm">    va, pa 为需要映射的虚拟地址、物理地址</span>
+<span class="cm">    sz 为映射的大小</span>
+<span class="cm">    perm 为映射的读写权限</span>
+
+<span class="cm">    创建多级页表的时候可以使用 kalloc() 来获取一页作为页表目录</span>
+<span class="cm">    可以使用 V bit 来判断页表项是否存在</span>
+<span class="cm">    */</span>
+<span class="p">}</span>
+</code></pre></div></td></tr></table></div></li>
+</ul>
+<h3 id="43">4.3 编译及测试</h3>
+<ul>
+<li>由于加入了一些新的 .c 文件，可能需要修改一些Makefile文件，请同学自己尝试修改，使项目可以编译并运行。</li>
+<li>输出示例
+    <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span></pre></div></td><td class="code"><div><pre><span></span><code>OpenSBI<span class="w"> </span>v0.9
+<span class="w">  </span>____<span class="w">                    </span>_____<span class="w"> </span>____<span class="w"> </span>_____
+<span class="w"> </span>/<span class="w"> </span>__<span class="w"> </span><span class="se">\ </span><span class="w">                 </span>/<span class="w"> </span>____<span class="p">|</span><span class="w">  </span>_<span class="w"> </span><span class="se">\_</span><span class="w">   </span>_<span class="p">|</span>
+<span class="p">|</span><span class="w"> </span><span class="p">|</span><span class="w">  </span><span class="p">|</span><span class="w"> </span><span class="p">|</span>_<span class="w"> </span>__<span class="w">   </span>___<span class="w"> </span>_<span class="w"> </span>__<span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="o">(</span>___<span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="p">|</span>_<span class="o">)</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="p">|</span>
+<span class="p">|</span><span class="w"> </span><span class="p">|</span><span class="w">  </span><span class="p">|</span><span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="s1">&#39;_ \ / _ \ &#39;</span>_<span class="w"> </span><span class="se">\ \_</span>__<span class="w"> </span><span class="se">\|</span><span class="w">  </span>_<span class="w"> </span>&lt;<span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="p">|</span>
+<span class="p">|</span><span class="w"> </span><span class="p">|</span>__<span class="p">|</span><span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="p">|</span>_<span class="o">)</span><span class="w"> </span><span class="p">|</span><span class="w">  </span>__/<span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="p">|</span>____<span class="o">)</span><span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="p">|</span>_<span class="o">)</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="p">|</span>_
+<span class="w"> </span><span class="se">\_</span>___/<span class="p">|</span><span class="w"> </span>.__/<span class="w"> </span><span class="se">\_</span>__<span class="p">|</span>_<span class="p">|</span><span class="w"> </span><span class="p">|</span>_<span class="p">|</span>_____/<span class="p">|</span>____/_____<span class="p">|</span>
+<span class="w">       </span><span class="p">|</span><span class="w"> </span><span class="p">|</span>
+<span class="w">       </span><span class="p">|</span>_<span class="p">|</span>
+
+...
+
+Boot<span class="w"> </span>HART<span class="w"> </span>MIDELEG<span class="w">         </span>:<span class="w"> </span>0x0000000000000222
+Boot<span class="w"> </span>HART<span class="w"> </span>MEDELEG<span class="w">         </span>:<span class="w"> </span>0x000000000000b109
+
+...mm_init<span class="w"> </span><span class="k">done</span>!
+...proc_init<span class="w"> </span><span class="k">done</span>!
+Hello<span class="w"> </span>RISC-V
+idle<span class="w"> </span>process<span class="w"> </span>is<span class="w"> </span>running!
+
+switch<span class="w"> </span>to<span class="w"> </span><span class="o">[</span><span class="nv">PID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">28</span><span class="w"> </span><span class="nv">COUNTER</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="o">]</span><span class="w"> </span>
+<span class="o">[</span><span class="nv">PID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">28</span><span class="o">]</span><span class="w"> </span>is<span class="w"> </span>running!<span class="w"> </span>thread<span class="w"> </span>space<span class="w"> </span>begin<span class="w"> </span>at<span class="w"> </span>0xffffffe007fa2000
+
+switch<span class="w"> </span>to<span class="w"> </span><span class="o">[</span><span class="nv">PID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">12</span><span class="w"> </span><span class="nv">COUNTER</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="o">]</span><span class="w"> </span>
+<span class="o">[</span><span class="nv">PID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">12</span><span class="o">]</span><span class="w"> </span>is<span class="w"> </span>running!<span class="w"> </span>thread<span class="w"> </span>space<span class="w"> </span>begin<span class="w"> </span>at<span class="w"> </span>0xffffffe007fb2000
+
+switch<span class="w"> </span>to<span class="w"> </span><span class="o">[</span><span class="nv">PID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">14</span><span class="w"> </span><span class="nv">COUNTER</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2</span><span class="o">]</span><span class="w"> </span>
+<span class="o">[</span><span class="nv">PID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">14</span><span class="o">]</span><span class="w"> </span>is<span class="w"> </span>running!<span class="w"> </span>thread<span class="w"> </span>space<span class="w"> </span>begin<span class="w"> </span>at<span class="w"> </span>0xffffffe007fb0000
+<span class="o">[</span><span class="nv">PID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">14</span><span class="o">]</span><span class="w"> </span>is<span class="w"> </span>running!<span class="w"> </span>thread<span class="w"> </span>space<span class="w"> </span>begin<span class="w"> </span>at<span class="w"> </span>0xffffffe007fb0000
+
+switch<span class="w"> </span>to<span class="w"> </span><span class="o">[</span><span class="nv">PID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">9</span><span class="w"> </span><span class="nv">COUNTER</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2</span><span class="o">]</span><span class="w"> </span>
+<span class="o">[</span><span class="nv">PID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">9</span><span class="o">]</span><span class="w"> </span>is<span class="w"> </span>running!<span class="w"> </span>thread<span class="w"> </span>space<span class="w"> </span>begin<span class="w"> </span>at<span class="w"> </span>0xffffffe007fb5000
+<span class="o">[</span><span class="nv">PID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">9</span><span class="o">]</span><span class="w"> </span>is<span class="w"> </span>running!<span class="w"> </span>thread<span class="w"> </span>space<span class="w"> </span>begin<span class="w"> </span>at<span class="w"> </span>0xffffffe007fb5000
+
+switch<span class="w"> </span>to<span class="w"> </span><span class="o">[</span><span class="nv">PID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2</span><span class="w"> </span><span class="nv">COUNTER</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2</span><span class="o">]</span><span class="w"> </span>
+<span class="o">[</span><span class="nv">PID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2</span><span class="o">]</span><span class="w"> </span>is<span class="w"> </span>running!<span class="w"> </span>thread<span class="w"> </span>space<span class="w"> </span>begin<span class="w"> </span>at<span class="w"> </span>0xffffffe007fbc000
+<span class="o">[</span><span class="nv">PID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2</span><span class="o">]</span><span class="w"> </span>is<span class="w"> </span>running!<span class="w"> </span>thread<span class="w"> </span>space<span class="w"> </span>begin<span class="w"> </span>at<span class="w"> </span>0xffffffe007fbc000
+
+switch<span class="w"> </span>to<span class="w"> </span><span class="o">[</span><span class="nv">PID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="nv">COUNTER</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2</span><span class="o">]</span><span class="w"> </span>
+<span class="o">[</span><span class="nv">PID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="o">]</span><span class="w"> </span>is<span class="w"> </span>running!<span class="w"> </span>thread<span class="w"> </span>space<span class="w"> </span>begin<span class="w"> </span>at<span class="w"> </span>0xffffffe007fbd000
+<span class="o">[</span><span class="nv">PID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="o">]</span><span class="w"> </span>is<span class="w"> </span>running!<span class="w"> </span>thread<span class="w"> </span>space<span class="w"> </span>begin<span class="w"> </span>at<span class="w"> </span>0xffffffe007fbd000
+
+switch<span class="w"> </span>to<span class="w"> </span><span class="o">[</span><span class="nv">PID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">29</span><span class="w"> </span><span class="nv">COUNTER</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">3</span><span class="o">]</span><span class="w"> </span>
+<span class="o">[</span><span class="nv">PID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">29</span><span class="o">]</span><span class="w"> </span>is<span class="w"> </span>running!<span class="w"> </span>thread<span class="w"> </span>space<span class="w"> </span>begin<span class="w"> </span>at<span class="w"> </span>0xffffffe007fa1000
+<span class="o">[</span><span class="nv">PID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">29</span><span class="o">]</span><span class="w"> </span>is<span class="w"> </span>running!<span class="w"> </span>thread<span class="w"> </span>space<span class="w"> </span>begin<span class="w"> </span>at<span class="w"> </span>0xffffffe007fa1000
+<span class="o">[</span><span class="nv">PID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">29</span><span class="o">]</span><span class="w"> </span>is<span class="w"> </span>running!<span class="w"> </span>thread<span class="w"> </span>space<span class="w"> </span>begin<span class="w"> </span>at<span class="w"> </span>0xffffffe007fa1000
+
+switch<span class="w"> </span>to<span class="w"> </span><span class="o">[</span><span class="nv">PID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">11</span><span class="w"> </span><span class="nv">COUNTER</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">3</span><span class="o">]</span><span class="w"> </span>
+<span class="o">[</span><span class="nv">PID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">11</span><span class="o">]</span><span class="w"> </span>is<span class="w"> </span>running!<span class="w"> </span>thread<span class="w"> </span>space<span class="w"> </span>begin<span class="w"> </span>at<span class="w"> </span>0xffffffe007fb3000
+...
+</code></pre></div></td></tr></table></div></li>
+</ul>
+<h2 id="_1">思考题</h2>
+<ol>
+<li>验证 <code>.text</code>, <code>.rodata</code> 段的属性是否成功设置，给出截图。</li>
+<li>为什么我们在 <code>setup_vm</code> 中需要做等值映射?</li>
+<li>在 Linux 中，是不需要做等值映射的。请探索一下不在 <code>setup_vm</code> 中做等值映射的方法。</li>
+</ol>
+<h2 id="_2">作业提交</h2>
+<p>同学需要提交实验报告以及整个工程代码，在提交前请使用 <code>make clean</code> 清除所有构建产物。</p>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+          <a href="#" class="md-top md-icon" data-md-component="top" hidden>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+            Back to top
+          </a>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.top"], "search": "../assets/javascripts/workers/search.e5c33ebb.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.ba449ae6.min.js"></script>
+      
+        <script src="../javascripts/mathjax.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

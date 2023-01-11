@@ -1,0 +1,1618 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://zju-sec.github.io/os22fall-stu/lab3/">
+      
+      
+        <link rel="prev" href="../lab2/">
+      
+      
+        <link rel="next" href="../lab4/">
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.3">
+    
+    
+      
+        <title>实验指导三 - 浙江大学22年秋操作系统实验</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.6b71719e.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.2505c338.min.css">
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CCascadia:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Cascadia"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="" data-md-color-accent="">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#lab-3-rv64" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="浙江大学22年秋操作系统实验" class="md-header__button md-logo" aria-label="浙江大学22年秋操作系统实验" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            浙江大学22年秋操作系统实验
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              实验指导三
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      <form class="md-header__option" data-md-component="palette">
+        
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="" data-md-color-accent=""  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+          
+            <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6zm0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4zM7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+            </label>
+          
+        
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="" data-md-color-accent=""  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+          
+            <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3Z"/></svg>
+            </label>
+          
+        
+      </form>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/ZJU-SEC/os22fall-stu" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    ZJU-SEC/os22fall-stu
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="浙江大学22年秋操作系统实验" class="md-nav__button md-logo" aria-label="浙江大学22年秋操作系统实验" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    浙江大学22年秋操作系统实验
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/ZJU-SEC/os22fall-stu" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    ZJU-SEC/os22fall-stu
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab0/" class="md-nav__link">
+        实验指导零
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab1/" class="md-nav__link">
+        实验指导一
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab2/" class="md-nav__link">
+        实验指导二
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          实验指导三
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        实验指导三
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    1 实验目的
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    2 实验环境
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    3 背景知识
+  </a>
+  
+    <nav class="md-nav" aria-label="3 背景知识">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#30" class="md-nav__link">
+    3.0 前言
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#31" class="md-nav__link">
+    3.1 进程与线程
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#31_1" class="md-nav__link">
+    3.1 线程相关属性
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32" class="md-nav__link">
+    3.2 线程切换流程图
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    4 实验步骤
+  </a>
+  
+    <nav class="md-nav" aria-label="4 实验步骤">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41" class="md-nav__link">
+    4.1 准备工程
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-proch" class="md-nav__link">
+    4.2 proc.h 数据结构定义
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43" class="md-nav__link">
+    4.3 线程调度功能实现
+  </a>
+  
+    <nav class="md-nav" aria-label="4.3 线程调度功能实现">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#431" class="md-nav__link">
+    4.3.1 线程初始化
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#432-__dummy-dummy" class="md-nav__link">
+    4.3.2 __dummy 与 dummy 介绍
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#433" class="md-nav__link">
+    4.3.3 实现线程切换
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#434" class="md-nav__link">
+    4.3.4 实现调度入口函数
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#435" class="md-nav__link">
+    4.3.5 实现线程调度
+  </a>
+  
+    <nav class="md-nav" aria-label="4.3.5 实现线程调度">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#4351" class="md-nav__link">
+    4.3.5.1 短作业优先调度算法
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4352" class="md-nav__link">
+    4.3.5.2 优先级调度算法
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#44" class="md-nav__link">
+    4.4 编译及测试
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    思考题
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    作业提交
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab4/" class="md-nav__link">
+        实验指导四
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab5/" class="md-nav__link">
+        实验指导五
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab6/" class="md-nav__link">
+        实验指导六
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../faq/" class="md-nav__link">
+        常见问题及解答
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    1 实验目的
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    2 实验环境
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    3 背景知识
+  </a>
+  
+    <nav class="md-nav" aria-label="3 背景知识">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#30" class="md-nav__link">
+    3.0 前言
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#31" class="md-nav__link">
+    3.1 进程与线程
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#31_1" class="md-nav__link">
+    3.1 线程相关属性
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32" class="md-nav__link">
+    3.2 线程切换流程图
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    4 实验步骤
+  </a>
+  
+    <nav class="md-nav" aria-label="4 实验步骤">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41" class="md-nav__link">
+    4.1 准备工程
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-proch" class="md-nav__link">
+    4.2 proc.h 数据结构定义
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43" class="md-nav__link">
+    4.3 线程调度功能实现
+  </a>
+  
+    <nav class="md-nav" aria-label="4.3 线程调度功能实现">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#431" class="md-nav__link">
+    4.3.1 线程初始化
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#432-__dummy-dummy" class="md-nav__link">
+    4.3.2 __dummy 与 dummy 介绍
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#433" class="md-nav__link">
+    4.3.3 实现线程切换
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#434" class="md-nav__link">
+    4.3.4 实现调度入口函数
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#435" class="md-nav__link">
+    4.3.5 实现线程调度
+  </a>
+  
+    <nav class="md-nav" aria-label="4.3.5 实现线程调度">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#4351" class="md-nav__link">
+    4.3.5.1 短作业优先调度算法
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4352" class="md-nav__link">
+    4.3.5.2 优先级调度算法
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#44" class="md-nav__link">
+    4.4 编译及测试
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    思考题
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    作业提交
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+
+<h1 id="lab-3-rv64">Lab 3: RV64 内核线程调度</h1>
+<h2 id="1">1 实验目的</h2>
+<ul>
+<li>了解线程概念, 并学习线程相关结构体, 并实现线程的初始化功能。</li>
+<li>了解如何使用时钟中断来实现线程的调度。</li>
+<li>了解线程切换原理, 并实现线程的切换。</li>
+<li>掌握简单的线程调度算法, 并完成两种简单调度算法的实现。</li>
+</ul>
+<h2 id="2">2 实验环境</h2>
+<ul>
+<li>Environment in previous labs</li>
+</ul>
+<h2 id="3">3 背景知识</h2>
+<h3 id="30">3.0 前言</h3>
+<p>在 lab2 中, 我们利用 trap 赋予了 OS 与软件, 硬件的交互能力。但是目前我们的 OS 还不具备多进程调度以及并发执行的能力。在本次实验中, 我们将利用时钟中断, 来实现多进程的调度以使得多个进程/线程并发执行。</p>
+<h3 id="31">3.1 进程与线程</h3>
+<p><code>源代码</code>经编译器一系列处理（编译、链接、优化等）后得到的可执行文件, 我们称之为<code>程序 (Program)</code>。而通俗地说, <code>进程</code>就是<code>正在运行并使用计算机资源</code>的程序。<code>进程</code>与<code>程序</code>的不同之处在于, <code>进程</code>是一个动态的概念, 其不仅需要将其运行的程序的代码/数据等加载到内存空间中, 还需要拥有自己的<code>运行栈</code>。同时一个<code>进程</code>可以对应一个或多个<code>线程</code>, <code>线程</code>之间往往具有相同的代码, 共享一块内存, 但是却有不同的CPU执行状态。</p>
+<p>在本次实验中, 为了简单起见,  我们采用 <code>single-threaded process</code> 模型,  即<code>一个进程</code>对应<code>一个线程</code>, 进程与线程不做明显区分。</p>
+<h3 id="31_1">3.1 线程相关属性</h3>
+<p>在不同的操作系统中, 为每个线程所保存的信息都不同。在这里, 我们提供一种基础的实现, 每个线程会包括：</p>
+<ul>
+<li><code>线程ID</code>：用于唯一确认一个线程。</li>
+<li><code>运行栈</code>：每个线程都必须有一个独立的运行栈, 保存运行时的数据。</li>
+<li><code>执行上下文</code>：当线程不在执行状态时, 我们需要保存其上下文（其实就是<code>状态寄存器</code>的值）, 这样之后才能够将其恢复, 继续运行。</li>
+<li><code>运行时间片</code>：为每个线程分配的运行时间。</li>
+<li><code>优先级</code>：在优先级相关调度时, 配合调度算法, 来选出下一个执行的线程。</li>
+</ul>
+<h3 id="32">3.2 线程切换流程图</h3>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span></pre></div></td><td class="code"><div><pre><span></span><code>           Process 1         Operating System            Process 2
+               +
+               |                                            X
+ P1 executing  |                                            X
+               |                                            X
+               v Timer Interrupt Trap                       X
+               +----------------------&gt;                     X
+                                      +                     X
+               X                  do_timer()                X
+               X                      +                     X
+               X                  schedule()                X
+               X                      +                     X
+               X              save state to PCB1            X
+               X                      +                     X
+               X           restore state from PCB2          X
+               X                      +                     X
+               X                      |                     X
+               X                      v Timer Interrupt Ret
+               X                      +---------------------&gt;
+               X                                            |
+               X                                            |  P2 executing
+               X                                            |
+               X                       Timer Interrupt Trap v
+               X                      &lt;---------------------+
+               X                      +
+               X                  do_timer()
+               X                      +
+               X                  schedule()
+               X                      +
+               X              save state to PCB2
+               X                      +
+               X           restore state from PCB1
+               X                      +
+               X                      |
+                 Timer Interrupt Ret  v
+               &lt;----------------------+
+               |
+ P1 executing  |
+               |
+               v
+</code></pre></div></td></tr></table></div>
+<ul>
+<li>在每次处理时钟中断时, 操作系统首先会将当前线程的运行剩余时间减少一个单位。之后根据调度算法来确定是继续运行还是调度其他线程来执行。</li>
+<li>在进程调度时, 操作系统会遍历所有可运行的线程, 按照一定的调度算法选出下一个执行的线程。最终将选择得到的线程与当前线程切换。</li>
+<li>在切换的过程中, 首先我们需要保存当前线程的执行上下文, 再将将要执行线程的上下文载入到相关寄存器中, 至此我们就完成了线程的调度与切换。</li>
+</ul>
+<h2 id="4">4 实验步骤</h2>
+<h3 id="41">4.1 准备工程</h3>
+<ul>
+<li>此次实验基于 lab2 同学所实现的代码进行。</li>
+<li>从 <code>repo</code> 同步以下代码: <code>rand.h/rand.c</code>, <code>string.h/string.c</code>, <code>mm.h/mm.c</code>。并按照以下步骤将这些文件正确放置。其中 <code>mm.h/mm.c</code> 提供了简单的物理内存管理接口, <code>rand.h/rand.c</code>提供了 <code>rand()</code> 接口用以提供伪随机数序列, <code>string.h/string.c</code>提供了 <code>memset</code> 接口用以初始化一段内存空间。
+    <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span></pre></div></td><td class="code"><div><pre><span></span><code>.
+├── arch
+│   └── riscv
+│       ├── include
+│       │   └── mm.h
+│       └── kernel
+│           └── mm.c
+├── include
+│   ├── rand.h
+│   └── string.h
+└── lib
+    ├── rand.c
+    └── string.c
+</code></pre></div></td></tr></table></div></li>
+<li>在 lab3 中我们需要一些物理内存管理的接口, 在此我们提供了 <code>kalloc</code> 接口 ( 见<code>mm.c</code> ) 给同学。同学可以用 <code>kalloc</code> 来申请 4KB 的物理页。由于引入了简单的物理内存管理, 需要在 <code>_start</code> 的适当位置调用 <code>mm_init</code>, 来初始化内存管理系统, 并且在初始化时需要用一些自定义的宏, 需要修改 <code>defs.h</code>, 在 <code>defs.h</code> 添加如下内容：
+    <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="cp">#define PHY_START 0x0000000080000000</span>
+<span class="cp">#define PHY_SIZE  128 * 1024 * 1024 </span><span class="c1">// 128MB,  QEMU 默认内存大小</span>
+<span class="cp">#define PHY_END   (PHY_START + PHY_SIZE)</span>
+
+<span class="cp">#define PGSIZE 0x1000 </span><span class="c1">// 4KB</span>
+<span class="cp">#define PGROUNDUP(addr) ((addr + PGSIZE - 1) &amp; (~(PGSIZE - 1)))</span>
+<span class="cp">#define PGROUNDDOWN(addr) (addr &amp; (~(PGSIZE - 1)))</span>
+</code></pre></div></td></tr></table></div></li>
+<li>请在添加/修改上述文件代码之后, 确保工程可以正常运行, 之后再开始实现 <code>lab3</code> (有可能需要同学自己调整一些头文件的引入)。</li>
+<li>在 lab3 中需要同学需要添加并修改 <code>arch/riscv/include/proc.h</code> <code>arch/riscv/kernel/proc.c</code> 两个文件。</li>
+<li>本次实验需要实现两种不同的调度算法,  如何控制代码逻辑见 <code>4.4</code></li>
+</ul>
+<h3 id="42-proch">4.2 <code>proc.h</code> 数据结构定义</h3>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1">// arch/riscv/include/proc.h</span>
+
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;types.h&quot;</span>
+
+<span class="cp">#define NR_TASKS  (1 + 31) </span><span class="c1">// 用于控制 最大线程数量 （idle 线程 + 31 内核线程）</span>
+
+<span class="cp">#define TASK_RUNNING    0 </span><span class="c1">// 为了简化实验, 所有的线程都只有一种状态</span>
+
+<span class="cp">#define PRIORITY_MIN 1</span>
+<span class="cp">#define PRIORITY_MAX 10</span>
+
+<span class="cm">/* 用于记录 `线程` 的 `内核栈与用户栈指针` */</span>
+<span class="cm">/* (lab3中无需考虑, 在这里引入是为了之后实验的使用) */</span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">thread_info</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">uint64</span><span class="w"> </span><span class="n">kernel_sp</span><span class="p">;</span>
+<span class="w">    </span><span class="n">uint64</span><span class="w"> </span><span class="n">user_sp</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="cm">/* 线程状态段数据结构 */</span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">thread_struct</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">uint64</span><span class="w"> </span><span class="n">ra</span><span class="p">;</span>
+<span class="w">    </span><span class="n">uint64</span><span class="w"> </span><span class="n">sp</span><span class="p">;</span>
+<span class="w">    </span><span class="n">uint64</span><span class="w"> </span><span class="n">s</span><span class="p">[</span><span class="mi">12</span><span class="p">];</span>
+<span class="p">};</span>
+
+<span class="cm">/* 线程数据结构 */</span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">task_struct</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">struct</span><span class="w"> </span><span class="nc">thread_info</span><span class="o">*</span><span class="w"> </span><span class="n">thread_info</span><span class="p">;</span>
+<span class="w">    </span><span class="n">uint64</span><span class="w"> </span><span class="n">state</span><span class="p">;</span><span class="w">    </span><span class="c1">// 线程状态</span>
+<span class="w">    </span><span class="n">uint64</span><span class="w"> </span><span class="n">counter</span><span class="p">;</span><span class="w">  </span><span class="c1">// 运行剩余时间</span>
+<span class="w">    </span><span class="n">uint64</span><span class="w"> </span><span class="n">priority</span><span class="p">;</span><span class="w"> </span><span class="c1">// 运行优先级 1最低 10最高</span>
+<span class="w">    </span><span class="n">uint64</span><span class="w"> </span><span class="n">pid</span><span class="p">;</span><span class="w">      </span><span class="c1">// 线程id</span>
+
+<span class="w">    </span><span class="k">struct</span><span class="w"> </span><span class="nc">thread_struct</span><span class="w"> </span><span class="kr">thread</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="cm">/* 线程初始化 创建 NR_TASKS 个线程 */</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">task_init</span><span class="p">();</span>
+
+<span class="cm">/* 在时钟中断处理中被调用 用于判断是否需要进行调度 */</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">do_timer</span><span class="p">();</span>
+
+<span class="cm">/* 调度程序 选择出下一个运行的线程 */</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">schedule</span><span class="p">();</span>
+
+<span class="cm">/* 线程切换入口函数*/</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">switch_to</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">task_struct</span><span class="o">*</span><span class="w"> </span><span class="n">next</span><span class="p">);</span>
+
+<span class="cm">/* dummy funciton: 一个循环程序, 循环输出自己的 pid 以及一个自增的局部变量 */</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">dummy</span><span class="p">();</span>
+</code></pre></div></td></tr></table></div>
+<h3 id="43">4.3 线程调度功能实现</h3>
+<h4 id="431">4.3.1 线程初始化</h4>
+<ul>
+<li>在初始化线程的时候, 我们参考<a href="https://elixir.bootlin.com/linux/0.11/source/kernel/fork.c#L93">Linux v0.11中的实现</a>为每个线程分配一个 4KB 的物理页, 我们将 <code>task_struct</code> 存放在该页的低地址部分,  将线程的栈指针 <code>sp</code> 指向该页的高地址。具体内存布局如下图所示：
+    <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span></pre></div></td><td class="code"><div><pre><span></span><code>                    ┌─────────────┐◄─── High Address
+                    │             │
+                    │    stack    │
+                    │             │
+                    │             │
+              sp ──►├──────┬──────┤
+                    │      │      │
+                    │      ▼      │
+                    │             │
+                    │             │
+                    │             │
+                    │             │
+    4KB Page        │             │
+                    │             │
+                    │             │
+                    │             │
+                    ├─────────────┤
+                    │             │
+                    │             │
+                    │ task_struct │
+                    │             │
+                    │             │
+                    └─────────────┘◄─── Low Address
+</code></pre></div></td></tr></table></div></li>
+<li>当我们的 OS run 起来的时候, 其本身就是一个线程 <code>idle 线程</code>, 但是我们并没有为它设计好 <code>task_struct</code>。所以第一步我们要为 <code>idle</code> 设置 <code>task_struct</code>。并将 <code>current</code>, <code>task[0]</code> 都指向 <code>idle</code>。</li>
+<li>为了方便起见, 我们将 <code>task[1]</code> ~ <code>task[NR_TASKS - 1]</code>, 全部初始化,  这里和 <code>idle</code> 设置的区别在于要为这些线程设置 <code>thread_struct</code> 中的 <code>ra</code> 和 <code>sp</code>.</li>
+<li>在 <code>_start</code> 适当的位置调用 <code>task_init</code>
+    <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1">//arch/riscv/kernel/proc.c</span>
+
+<span class="k">extern</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">__dummy</span><span class="p">();</span>
+
+<span class="k">struct</span><span class="w"> </span><span class="nc">task_struct</span><span class="o">*</span><span class="w"> </span><span class="n">idle</span><span class="p">;</span><span class="w">           </span><span class="c1">// idle process</span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">task_struct</span><span class="o">*</span><span class="w"> </span><span class="n">current</span><span class="p">;</span><span class="w">        </span><span class="c1">// 指向当前运行线程的 `task_struct`</span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">task_struct</span><span class="o">*</span><span class="w"> </span><span class="n">task</span><span class="p">[</span><span class="n">NR_TASKS</span><span class="p">];</span><span class="w"> </span><span class="c1">// 线程数组, 所有的线程都保存在此</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">task_init</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// 1. 调用 kalloc() 为 idle 分配一个物理页</span>
+<span class="w">    </span><span class="c1">// 2. 设置 state 为 TASK_RUNNING;</span>
+<span class="w">    </span><span class="c1">// 3. 由于 idle 不参与调度 可以将其 counter / priority 设置为 0</span>
+<span class="w">    </span><span class="c1">// 4. 设置 idle 的 pid 为 0</span>
+<span class="w">    </span><span class="c1">// 5. 将 current 和 task[0] 指向 idle</span>
+
+<span class="w">    </span><span class="cm">/* YOUR CODE HERE */</span>
+
+<span class="w">    </span><span class="c1">// 1. 参考 idle 的设置, 为 task[1] ~ task[NR_TASKS - 1] 进行初始化</span>
+<span class="w">    </span><span class="c1">// 2. 其中每个线程的 state 为 TASK_RUNNING, counter 为 0, priority 使用 rand() 来设置, pid 为该线程在线程数组中的下标。</span>
+<span class="w">    </span><span class="c1">// 3. 为 task[1] ~ task[NR_TASKS - 1] 设置 `thread_struct` 中的 `ra` 和 `sp`,</span>
+<span class="w">    </span><span class="c1">// 4. 其中 `ra` 设置为 __dummy （见 4.3.2）的地址,  `sp` 设置为 该线程申请的物理页的高地址</span>
+
+<span class="w">    </span><span class="cm">/* YOUR CODE HERE */</span>
+
+<span class="w">    </span><span class="n">printk</span><span class="p">(</span><span class="s">&quot;...proc_init done!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></td></tr></table></div><blockquote>
+<p>Debug 提示：</p>
+<ol>
+<li>修改 <code>proc.h</code> 中的 <code>NR_TASKS</code> 为一个比较小的值, 比如 5,  这样 除去 <code>task[0]</code> ( idle ), 只需要初始化 4 个线程, 方便调试。</li>
+<li>注意以上的修改只是为了在做实验的过程中方便调试, 最后一定记住要修改回去！！！</li>
+</ol>
+</blockquote>
+</li>
+</ul>
+<h4 id="432-__dummy-dummy">4.3.2 <code>__dummy</code> 与 <code>dummy</code> 介绍</h4>
+<ul>
+<li>
+<p><code>task[1]</code> ~ <code>task[NR_TASKS - 1]</code>都运行同一段代码 <code>dummy()</code> 我们在 <code>proc.c</code> 添加 <code>dummy()</code>:
+    <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1">// arch/riscv/kernel/proc.c</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">dummy</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">uint64</span><span class="w"> </span><span class="n">MOD</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1000000007</span><span class="p">;</span>
+<span class="w">    </span><span class="n">uint64</span><span class="w"> </span><span class="n">auto_inc_local_var</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">last_counter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span>
+<span class="w">    </span><span class="k">while</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">last_counter</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">-1</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">current</span><span class="o">-&gt;</span><span class="n">counter</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">last_counter</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">last_counter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">current</span><span class="o">-&gt;</span><span class="n">counter</span><span class="p">;</span>
+<span class="w">            </span><span class="n">auto_inc_local_var</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">auto_inc_local_var</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="n">MOD</span><span class="p">;</span>
+<span class="w">            </span><span class="n">printk</span><span class="p">(</span><span class="s">&quot;[PID = %d] is running. auto_inc_local_var = %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">current</span><span class="o">-&gt;</span><span class="n">pid</span><span class="p">,</span><span class="w"> </span><span class="n">auto_inc_local_var</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></td></tr></table></div></p>
+<blockquote>
+<p>Debug 提示： 可以用 printk 打印更多的信息</p>
+</blockquote>
+</li>
+<li>
+<p>当线程在运行时, 由于时钟中断的触发, 会将当前运行线程的上下文环境保存在栈上。当线程再次被调度时, 会将上下文从栈上恢复, 但是当我们创建一个新的线程, 此时线程的栈为空, 当这个线程被调度时, 是没有上下文需要被恢复的, 所以我们需要为线程<code>第一次调度</code>提供一个特殊的返回函数 <code>__dummy</code></p>
+</li>
+<li>
+<p>在 <code>entry.S</code> 添加 <code>__dummy</code></p>
+<ul>
+<li>在<code>__dummy</code> 中将 sepc 设置为 <code>dummy()</code> 的地址, 并使用 <code>sret</code> 从中断中返回。</li>
+<li><code>__dummy</code> 与 <code>_traps</code>的 <code>restore</code> 部分相比, 其实就是省略了从栈上恢复上下文的过程 ( 但是手动设置了 <code>sepc</code> )。
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1"># arch/riscv/kernel/entry.S</span>
+
+<span class="w">    </span><span class="na">.global</span><span class="w"> </span><span class="no">__dummy</span>
+<span class="nl">__dummy:</span>
+<span class="w">    </span><span class="c1"># YOUR CODE HERE</span>
+</code></pre></div></td></tr></table></div></li>
+</ul>
+</li>
+</ul>
+<h4 id="433">4.3.3 实现线程切换</h4>
+<ul>
+<li>判断下一个执行的线程 <code>next</code> 与当前的线程 <code>current</code> 是否为同一个线程, 如果是同一个线程, 则无需做任何处理, 否则调用 <code>__switch_to</code> 进行线程切换。
+    <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1">// arch/riscv/kernel/proc.c</span>
+
+<span class="k">extern</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">__switch_to</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">task_struct</span><span class="o">*</span><span class="w"> </span><span class="n">prev</span><span class="p">,</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">task_struct</span><span class="o">*</span><span class="w"> </span><span class="n">next</span><span class="p">);</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">switch_to</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">task_struct</span><span class="o">*</span><span class="w"> </span><span class="n">next</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="cm">/* YOUR CODE HERE */</span>
+<span class="p">}</span>
+</code></pre></div></td></tr></table></div></li>
+<li>在 <code>entry.S</code> 中实现线程上下文切换 <code>__switch_to</code>:<ul>
+<li><code>__switch_to</code>接受两个 <code>task_struct</code> 指针作为参数</li>
+<li>保存当前线程的<code>ra</code>, <code>sp</code>, <code>s0~s11</code>到当前线程的 <code>thread_struct</code> 中</li>
+<li>将下一个线程的 <code>thread_struct</code> 中的相关数据载入到<code>ra</code>, <code>sp</code>, <code>s0~s11</code>中。
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1"># arch/riscv/kernel/entry.S</span>
+
+<span class="w">    </span><span class="na">.globl</span><span class="w"> </span><span class="no">__switch_to</span>
+<span class="nl">__switch_to:</span>
+<span class="w">    </span><span class="c1"># save state to prev process</span>
+<span class="w">    </span><span class="c1"># YOUR CODE HERE</span>
+
+<span class="w">    </span><span class="c1"># restore state from next process</span>
+<span class="w">    </span><span class="c1"># YOUR CODE HERE</span>
+
+<span class="w">    </span><span class="nf">ret</span>
+</code></pre></div></td></tr></table></div><blockquote>
+<p>Debug 提示： 可以尝试是否可以从 idle 正确切换到 process 1</p>
+</blockquote>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="434">4.3.4 实现调度入口函数</h4>
+<ul>
+<li>实现 <code>do_timer()</code>, 并在 <code>时钟中断处理函数</code> 中调用。
+    <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span>
+<span class="normal">8</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1">// arch/riscv/kernel/proc.c</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">do_timer</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// 1. 如果当前线程是 idle 线程 直接进行调度</span>
+<span class="w">    </span><span class="c1">// 2. 如果当前线程不是 idle 对当前线程的运行剩余时间减1 若剩余时间仍然大于0 则直接返回 否则进行调度</span>
+
+<span class="w">    </span><span class="cm">/* YOUR CODE HERE */</span>
+<span class="p">}</span>
+</code></pre></div></td></tr></table></div></li>
+</ul>
+<h4 id="435">4.3.5 实现线程调度</h4>
+<p>本次实验我们需要实现两种调度算法：1.短作业优先调度算法, 2.优先级调度算法。</p>
+<h5 id="4351">4.3.5.1 短作业优先调度算法</h5>
+<ul>
+<li>
+<p>当需要进行调度时按照一下规则进行调度：</p>
+<ul>
+<li>遍历线程指针数组<code>task</code>(不包括 <code>idle</code> , 即 <code>task[0]</code> ), 在所有运行状态 (<code>TASK_RUNNING</code>) 下的线程运行剩余时间<code>最少</code>的线程作为下一个执行的线程。</li>
+<li>如果<code>所有</code>运行状态下的线程运行剩余时间都为0, 则对 <code>task[1]</code> ~ <code>task[NR_TASKS-1]</code> 的运行剩余时间重新赋值 (使用 <code>rand()</code>) , 之后再重新进行调度。</li>
+</ul>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1">// arch/riscv/kernel/proc.c</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">schedule</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="cm">/* YOUR CODE HERE */</span>
+<span class="p">}</span>
+</code></pre></div></td></tr></table></div>
+<blockquote>
+<p>Debug 提示：可以先将 <code>NR_TASKS</code> 改为较小的值, 调用 <code>printk</code> 将所有线程的信息打印出来。</p>
+</blockquote>
+</li>
+</ul>
+<h5 id="4352">4.3.5.2 优先级调度算法</h5>
+<ul>
+<li>参考 <a href="https://elixir.bootlin.com/linux/0.11/source/kernel/sched.c#L122">Linux v0.11 调度算法实现</a> 实现。
+    <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1">// arch/riscv/kernel/proc.c</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">schedule</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="cm">/* YOUR CODE HERE */</span>
+<span class="p">}</span>
+</code></pre></div></td></tr></table></div></li>
+</ul>
+<h3 id="44">4.4 编译及测试</h3>
+<ul>
+<li>由于加入了一些新的 .c 文件, 可能需要修改一些Makefile文件, 请同学自己尝试修改, 使项目可以编译并运行。</li>
+<li>
+<p>由于本次实验需要完成两个调度算法, 因此需要两种调度算法可以使用<a href="https://www.rapidtables.com/code/linux/gcc/gcc-d.html"><code>gcc –D</code></a>选项进行控制。</p>
+<ul>
+<li>DSJF （短作业优先调度）。</li>
+<li>DPRIORITY （优先级调度）。</li>
+<li>在<code>proc.c</code>中使用 <code>#ifdef</code> , <code>#endif</code> 来控制代码。 修改顶层Makefile为 <code>CFLAG = ${CF} ${INCLUDE} -DSJF</code> 或 <code>CFLAG = ${CF} ${INCLUDE} -DPRIORITY</code> (作业提交的时候 <code>Makefile</code> 选择任意一个都可以)</li>
+</ul>
+</li>
+<li>
+<p>短作业优先调度输出示例 (为了便于展示, 这里一共只初始化了 4 个线程) 同学们最后提交时需要 保证 NR_TASKS 为 32 不变
+    <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span>
+<span class="normal">51</span>
+<span class="normal">52</span>
+<span class="normal">53</span></pre></div></td><td class="code"><div><pre><span></span><code>OpenSBI v0.9
+  ____                    _____ ____ _____
+ / __ \                  / ____|  _ \_   _|
+| |  | |_ __   ___ _ __ | (___ | |_) || |
+| |  | | &#39;_ \ / _ \ &#39;_ \ \___ \|  _ &lt; | |
+| |__| | |_) |  __/ | | |____) | |_) || |_
+ \____/| .__/ \___|_| |_|_____/|____/_____|
+       | |
+       |_|
+
+...
+
+Boot HART MIDELEG         : 0x0000000000000222
+Boot HART MEDELEG         : 0x000000000000b109
+
+...mm_init done!
+...proc_init done!
+Hello RISC-V
+idle process is running!
+
+SET [PID = 1 COUNTER = 10]
+SET [PID = 2 COUNTER = 10]
+SET [PID = 3 COUNTER = 5]
+SET [PID = 4 COUNTER = 2]
+
+switch to [PID = 4 COUNTER = 2]
+[PID = 4] is running. auto_inc_local_var = 1
+[PID = 4] is running. auto_inc_local_var = 2
+
+switch to [PID = 3 COUNTER = 5]
+[PID = 3] is running. auto_inc_local_var = 1
+.....
+[PID = 3] is running. auto_inc_local_var = 5
+
+switch to [PID = 2 COUNTER = 10]
+[PID = 2] is running. auto_inc_local_var = 1
+...
+[PID = 2] is running. auto_inc_local_var = 10
+
+switch to [PID = 1 COUNTER = 10]
+[PID = 1] is running. auto_inc_local_var = 1
+...
+[PID = 1] is running. auto_inc_local_var = 10
+
+SET [PID = 1 COUNTER = 9]
+SET [PID = 2 COUNTER = 4]
+SET [PID = 3 COUNTER = 4]
+SET [PID = 4 COUNTER = 10]
+
+switch to [PID = 3 COUNTER = 4]
+[PID = 3] is running. auto_inc_local_var = 6
+...
+[PID = 3] is running. auto_inc_local_var = 9
+</code></pre></div></td></tr></table></div></p>
+</li>
+<li>优先级调度输出示例
+    <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span>
+<span class="normal">51</span></pre></div></td><td class="code"><div><pre><span></span><code>OpenSBI v0.9
+  ____                    _____ ____ _____
+ / __ \                  / ____|  _ \_   _|
+| |  | |_ __   ___ _ __ | (___ | |_) || |
+| |  | | &#39;_ \ / _ \ &#39;_ \ \___ \|  _ &lt; | |
+| |__| | |_) |  __/ | | |____) | |_) || |_
+ \____/| .__/ \___|_| |_|_____/|____/_____|
+       | |
+       |_|
+
+...
+
+Boot HART MIDELEG         : 0x0000000000000222
+Boot HART MEDELEG         : 0x000000000000b109
+
+...mm_init done!
+...proc_init done!
+Hello RISC-V
+idle process is running!
+
+SET [PID = 1 PRIORITY = 1 COUNTER = 1]
+SET [PID = 2 PRIORITY = 4 COUNTER = 4]
+SET [PID = 3 PRIORITY = 10 COUNTER = 10]
+SET [PID = 4 PRIORITY = 4 COUNTER = 4]
+
+switch to [PID = 3 PRIORITY = 10 COUNTER = 10]
+[PID = 3] is running. auto_inc_local_var = 1
+...
+[PID = 3] is running. auto_inc_local_var = 10
+
+switch to [PID = 4 PRIORITY = 4 COUNTER = 4]
+[PID = 4] is running. auto_inc_local_var = 1
+...
+[PID = 4] is running. auto_inc_local_var = 4
+
+switch to [PID = 2 PRIORITY = 4 COUNTER = 4]
+[PID = 2] is running. auto_inc_local_var = 1
+...
+[PID = 2] is running. auto_inc_local_var = 4
+
+switch to [PID = 1 PRIORITY = 1 COUNTER = 1]
+[PID = 1] is running. auto_inc_local_var = 1
+
+SET [PID = 1 PRIORITY = 1 COUNTER = 1]
+SET [PID = 2 PRIORITY = 4 COUNTER = 4]
+SET [PID = 3 PRIORITY = 10 COUNTER = 10]
+SET [PID = 4 PRIORITY = 4 COUNTER = 4]
+
+switch to [PID = 3 PRIORITY = 10 COUNTER = 10]
+[PID = 3] is running. auto_inc_local_var = 11
+...
+</code></pre></div></td></tr></table></div></li>
+</ul>
+<h2 id="_1">思考题</h2>
+<ol>
+<li>
+<p>在 RV64 中一共用 32 个通用寄存器, 为什么 <code>context_switch</code> 中只保存了14个?</p>
+</li>
+<li>
+<p>当线程第一次调用时, 其 <code>ra</code> 所代表的返回点是 <code>__dummy</code>。那么在之后的线程调用中 <code>context_switch</code> 中, <code>ra</code> 保存/恢复的函数返回点是什么呢? 请同学用 gdb 尝试追踪一次完整的线程切换流程, 并关注每一次 <code>ra</code> 的变换 (需要截图)。</p>
+</li>
+<li>
+<p>运行课堂 demo 的 <code>hello-lkm</code> 代码, 回答下列问题:</p>
+<p>a. 对运行结果进行截图, 展示同一进程内的线程哪些数据 share, 哪些不 share</p>
+<p>b. 安装 lkm 和 remove lkm 的命令分别是什么? 对内核进行了哪些改动?</p>
+<p>c. 使用哪个内核函数可以输出到内核 log?</p>
+<blockquote>
+<p>特别地，如果你正在使用 <code>WSL2</code> 上的 <code>Ubuntu 22.04</code>，由于官方和浙大源中都没有给出对应版本的 <code>linux-headers</code>，所以需要我们从 Linux 源码开始编译 kernel module。你可以从微软的官方 <a href="https://github.com/microsoft/WSL2-Linux-Kernel">WSL2 Kernel Repository</a> 中获取到你正在使用的 WSL2 内核版本对应的源码。</p>
+<p>例如我通过 <code>uname -r</code> 得到的结果是 <code>5.10.16.3-microsoft-standard-WSL2</code>，就需要从这个 Repo 的 <a href="https://github.com/microsoft/WSL2-Linux-Kernel#:~:text=8%20branches-,3%2C144%20tags,-Go%20to%20file">tags</a> 中找到 <a href="https://github.com/microsoft/WSL2-Linux-Kernel/tags#:~:text=linux%2Dmsft%2Dwsl%2D5.10.16.3">linux-msft-wsl-5.10.16.3</a> 的源码并下载解压。</p>
+<p>在编译 <code>lkm</code> 之前，需要首先编译 Linux 内核，我们可以使用命令 <code>zcat /proc/config.gz &gt; .config</code> 来将当前运行的内核的配置直接复制到内核仓库中，然后直接进行 <code>make</code>。如果在编译的过程中遇到了部分选项没有配置的提示，可以一直敲回车来选择默认选项。</p>
+<p>在编译完成以后，你需要阅读我们给出的 <code>lkm</code> 的 <code>Makefile</code> 来理解其具体行为，并将编译进行的目录指定为我们刚刚的内核目录（即是刚刚我们解压完成的名为 <code>WSL2-Linux-Kernel-linux-msft-wsl-5.10.16.3</code>，并进行了内核编译的目录），注意不用带上后面的 <code>build</code> 子目录路径，即可完成编译。</p>
+</blockquote>
+</li>
+</ol>
+<h2 id="_2">作业提交</h2>
+<p>同学需要提交实验报告以及整个工程代码。在提交前请使用 <code>make clean</code> 清除所有构建产物。</p>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+          <a href="#" class="md-top md-icon" data-md-component="top" hidden>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+            Back to top
+          </a>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.top"], "search": "../assets/javascripts/workers/search.e5c33ebb.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.ba449ae6.min.js"></script>
+      
+        <script src="../javascripts/mathjax.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>
